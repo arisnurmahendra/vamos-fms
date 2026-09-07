@@ -819,8 +819,8 @@
             "priority": "P1",
             "area": "Maintenance",
             "dependencies": ["FE-002", "BE-005"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Pencatatan perbaikan dan estimasi biaya (RAB/SI/BAP).",

@@ -1,6 +1,6 @@
 # 🔧 ISSUE TRACKER — Maintenance Module Refactor (old_apps → VAMOS FMS)
 
-> **Terakhir diperbarui:** 2026-09-07 15:25 WIB  
+> **Terakhir diperbarui:** 2026-09-08 00:45 WIB\n> **Status Implementasi:** ✅ 100% Selesai (Semua 26 Isu Terverifikasi & Closed)  
 > **Target:** Merefaktor `old_apps/Maintenance` (GAS SmartServ monolith) menjadi modul Vue 3 + GAS di VAMOS FMS  
 > **Strategi:** Strangler Fig — ganti module per domain tanpa mengganggu production lama
 
@@ -85,7 +85,7 @@ Fase 1 → Fase 2 → Fase 3 → Fase 4 → Fase 5 → Fase 6 → Fase 7
 - **Priority:** P0 🔥 CRITICAL SECURITY  
 - **Area:** Maintenance / Security  
 - **Dependencies:** None  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Variabel `ᗩrisՈurᗰahendra` dihapus dari seluruh source code.  
@@ -108,7 +108,7 @@ Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.IS
 - **Priority:** P0  
 - **Area:** Maintenance / Config  
 - **Dependencies:** None  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Script Properties yang dibutuhkan: `MAINTENANCE_SS_ID`, `MAINTENANCE_FOLDER_IMG`, `MAINTENANCE_FOLDER_PDF`.  
@@ -136,7 +136,7 @@ Dokumentasikan struktur semua sheet: `users`, `usercontrol`, `harsat`, `laporan`
 - **Priority:** P1  
 - **Area:** Maintenance / Data  
 - **Dependencies:** MTN-001, MTN-002  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Setiap sheet terdokumentasi: kolom, tipe, mandatory/optional, dan relasi ke sheet lain.  
@@ -161,7 +161,7 @@ Dua bug kritis yang ditemukan saat code review:
 - **Priority:** P0 🐛 BUG  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-003  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - `updateLaporan`: status machine (`Open → Process → Close`) berfungsi benar tanpa di-override `null`.  
@@ -183,7 +183,7 @@ Rancang skema state VAMOS FMS untuk module Maintenance menggunakan Pinia, mencer
 - **Priority:** P1  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-003  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - `useMaintenanceStore.js` dibuat dengan state per domain: `laporan[]`, `harsat[]`, `rab[]`, `noRabList[]`, `noSpkList[]`, `vehicles[]`.  
@@ -212,7 +212,7 @@ Sistem auth lama menggunakan username/passkey custom yang dienkripsi AES, disimp
 - **Priority:** P1  
 - **Area:** Maintenance / Auth  
 - **Dependencies:** MTN-001, SEC-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Tidak ada lagi custom login form atau passkey management.  
@@ -235,7 +235,7 @@ Sheet `users` dan `usercontrol` menyimpan data user Maintenance dengan password 
 - **Priority:** P2  
 - **Area:** Maintenance / Auth  
 - **Dependencies:** MTN-006  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Data user dari `usercontrol` dimigrasikan ke `USER_ROLES` VAMOS dengan field: `user_id`, `email`, `fullname`, `role`, `is_active`.  
@@ -264,7 +264,7 @@ Port `getLaporan`, `addLaporan`, `updateLaporan`, `deleteLaporan` ke actions `ma
 - **Priority:** P1  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-004, MTN-006, BE-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Actions: `maintenance.laporan.list`, `maintenance.laporan.create`, `maintenance.laporan.update`, `maintenance.laporan.delete`.  
@@ -288,7 +288,7 @@ Port `getHarsat`, `addHarsat`, `updateHarsat`, `deleteHarsat` ke actions `mainte
 - **Priority:** P2  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-008  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Actions: `maintenance.harsat.list`, `maintenance.harsat.create`, `maintenance.harsat.update`, `maintenance.harsat.delete`.  
@@ -311,7 +311,7 @@ Port `getVehicles` ke actions `maintenance.vehicles.*` di VAMOS. Kendaraan adala
 - **Priority:** P2  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-008  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Actions: `maintenance.vehicles.list`, `maintenance.vehicles.create`, `maintenance.vehicles.update`, `maintenance.vehicles.delete`.  
@@ -333,7 +333,7 @@ Konsolidasikan `saveRAB`, `saveRABDetailToSheet` (dua fungsi hampir identik!), `
 - **Priority:** P1  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-008, MTN-009, MTN-010  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Actions: `maintenance.rab.list`, `maintenance.rab.listByLaporan`, `maintenance.rab.create`, `maintenance.rab.update`, `maintenance.rab.delete`.  
@@ -356,7 +356,7 @@ Port `getSPKRab`, `getNoSPKList`, `saveSPKDetailToSheet`, `deleteSPKByNo`, `getI
 - **Priority:** P1  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-011  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Actions: `maintenance.spk.list`, `maintenance.spk.listFromRAB`, `maintenance.spk.create`, `maintenance.spk.delete`, `maintenance.spk.getInfo`, `maintenance.spk.updateDasarDokumen`.  
@@ -379,7 +379,7 @@ Port `getResumeData`, `updateResumeDasarDokumen` ke actions `maintenance.resume.
 - **Priority:** P2  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-012  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Action `maintenance.resume.get` mengembalikan summary: total laporan (open/process/close), total RAB, total SPK.  
@@ -407,7 +407,7 @@ Port `uploadBase64ImageToDrive` dan `uploadPdfAndSetReference` ke dalam action `
 - **Priority:** P1  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-002, MTN-012  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Action `maintenance.document.upload` menerima: `{ base64, fileName, type: 'image'|'pdf', targetSheet, targetUid, targetHeader }`.  
@@ -431,7 +431,7 @@ Identifikasi dan port fungsi pembuatan PDF dokumen (RAB, SPK, BA) yang ada di `a
 - **Priority:** P2  
 - **Area:** Maintenance / Backend  
 - **Dependencies:** MTN-014  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - PDF RAB dan SPK di-generate server-side via GAS (bukan html2pdf.js client-side).  
@@ -461,7 +461,7 @@ Buat halaman dashboard Maintenance menggantikan `app_main.html` dan `app_welcome
 - **Priority:** P1  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-013, FE-002  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Card summary: Total Laporan (Open/Process/Close), RAB Pending, SPK Aktif.  
@@ -484,7 +484,7 @@ Buat halaman manajemen laporan kerusakan menggantikan `app_laporan.html` (44 KB!
 - **Priority:** P1  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-008, MTN-016  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Tabel laporan dengan filter: status (`Open`/`Process`/`Close`), plat kendaraan, tanggal.  
@@ -508,7 +508,7 @@ Buat halaman editor RAB menggantikan `app_rab.html` (38 KB!). User memilih lapor
 - **Priority:** P1  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-011, MTN-017  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - List laporan open yang belum memiliki RAB (dari `maintenance.rab.listByLaporan`).  
@@ -533,7 +533,7 @@ Buat halaman manajemen SPK menggantikan `app_spk.html` (35 KB!). SPK dibuat berd
 - **Priority:** P1  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-012, MTN-018  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - List RAB yang siap dibuatkan SPK (status RAB = `Open`).  
@@ -557,7 +557,7 @@ Buat halaman CRUD harga satuan (master item biaya) menggantikan `app_harsat.html
 - **Priority:** P2  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-009, FE-002  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Tabel list harsat dengan search/filter.  
@@ -580,7 +580,7 @@ Buat halaman CRUD kendaraan operasional menggantikan dropdown data lama.
 - **Priority:** P2  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-010, FE-002  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Tabel list kendaraan: plat, jenis, merek, tahun, no. rangka.  
@@ -602,7 +602,7 @@ Port `app_profile.html` (7 KB) — halaman edit profil user. Di VAMOS FMS, ini c
 - **Priority:** P3  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-006  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Tampilkan: nama, email, role, last login.  
@@ -624,7 +624,7 @@ Port `app_usermanager.html` (10 KB) — halaman admin manajemen user dengan role
 - **Priority:** P2  
 - **Area:** Maintenance / Frontend  
 - **Dependencies:** MTN-007  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Hanya SuperAdmin yang dapat mengakses.  
@@ -651,7 +651,7 @@ Port dan implementasikan automated test untuk semua RPC actions Maintenance, ter
 - **Priority:** P1  
 - **Area:** Maintenance / Testing  
 - **Dependencies:** MTN-008 – MTN-013  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Test CRUD untuk: laporan, harsat, vehicles, rab, spk.  
@@ -675,7 +675,7 @@ Lakukan pengujian end-to-end seluruh alur Maintenance: Laporan masuk → RAB dib
 - **Priority:** P1  
 - **Area:** Maintenance / Testing  
 - **Dependencies:** MTN-016 – MTN-023, MTN-024  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Buat laporan baru → status `Open`.  
@@ -700,7 +700,7 @@ Buat script migrasi data dari spreadsheet lama ke struktur VAMOS, lakukan cutove
 - **Priority:** P1  
 - **Area:** Maintenance / Deployment  
 - **Dependencies:** MTN-025  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Migration script memindahkan: `usercontrol` → `USER_ROLES`, `laporan` → VAMOS sheet, `harsat` → VAMOS sheet, `vehicles` → VAMOS sheet.  

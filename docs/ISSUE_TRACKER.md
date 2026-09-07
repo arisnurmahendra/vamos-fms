@@ -901,7 +901,7 @@ Pengembangan modul pelacakan perawatan armada, riwayat perbaikan, servis berkala
 - **Priority:** P1  
 - **Area:** Maintenance  
 - **Dependencies:** FE-002, BE-005  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Pencatatan perbaikan dan estimasi biaya (RAB/SI/BAP).  

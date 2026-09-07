@@ -319,6 +319,202 @@ export const apiService = {
         };
       }
 
+      // Modul Maintenance Demo Mocks
+      if (action === 'maintenance.harsat.list') {
+        return {
+          status: 'success',
+          code: 200,
+          data: [
+            { kode_item: 'HST-001', deskripsi: 'Ganti Oli Mesin Synthetic 10W-40 (4L)', kategori: 'Oli & Pelumas', satuan: 'Galon', harga_satuan: 385000, status: 'AKTIF' },
+            { kode_item: 'HST-002', deskripsi: 'Jasa Tune Up & Gurah Mesin Diesel', kategori: 'Jasa Mekanik', satuan: 'Paket', harga_satuan: 450000, status: 'AKTIF' },
+            { kode_item: 'HST-003', deskripsi: 'Kampas Rem Depan (Brake Pad Set)', kategori: 'Fast Moving Part', satuan: 'Set', harga_satuan: 550000, status: 'AKTIF' },
+            { kode_item: 'HST-004', deskripsi: 'Filter Bahan Bakar (Fuel Filter)', kategori: 'Fast Moving Part', satuan: 'Pcs', harga_satuan: 175000, status: 'AKTIF' },
+            { kode_item: 'HST-005', deskripsi: 'Spooring 3D & Balancing 4 Roda', kategori: 'Jasa Mekanik', satuan: 'Paket', harga_satuan: 300000, status: 'AKTIF' }
+          ]
+        };
+      }
+
+      if (action === 'maintenance.vehicles.list') {
+        return {
+          status: 'success',
+          code: 200,
+          data: [
+            { nopol: 'KT 1234 AB', merk_model: 'Toyota Hilux 4x4 Double Cabin', tahun: 2022, odometer: 45200, jadwal_servis_km: 50000, status_operasional: 'SIAP_OPERASI' },
+            { nopol: 'KT 5678 CD', merk_model: 'Mitsubishi Triton 4x4', tahun: 2023, odometer: 28400, jadwal_servis_km: 30000, status_operasional: 'PERLU_SERVIS' },
+            { nopol: 'KT 9012 EF', merk_model: 'Toyota Hiace Commuter 2.5', tahun: 2021, odometer: 88100, jadwal_servis_km: 90000, status_operasional: 'SIAP_OPERASI' }
+          ]
+        };
+      }
+
+      if (action === 'maintenance.report.submit' || action === 'maintenance.laporan.submit') {
+        const noLaporan = `MNT-${Date.now()}`;
+        return {
+          status: 'success',
+          code: 200,
+          message: `Laporan kerusakan armada ${noLaporan} berhasil dibuat (Demo Mock).`,
+          data: {
+            no_laporan: noLaporan,
+            nopol: data.nopol,
+            status: 'LAPORAN_BARU'
+          }
+        };
+      }
+
+      if (action === 'maintenance.report.update' || action === 'maintenance.laporan.update') {
+        return {
+          status: 'success',
+          code: 200,
+          message: `Status laporan ${data.no_laporan} berhasil diperbarui ke ${data.status} (Demo Mock).`,
+          data: {
+            no_laporan: data.no_laporan,
+            status: data.status
+          }
+        };
+      }
+
+      if (action === 'maintenance.rab.submit') {
+        const noRAB = `RAB-${Date.now()}`;
+        return {
+          status: 'success',
+          code: 200,
+          message: `RAB ${noRAB} berhasil diajukan (Demo Mock).`,
+          data: {
+            no_rab: noRAB,
+            no_laporan: data.no_laporan,
+            total_estimasi: 750000
+          }
+        };
+      }
+
+      if (action === 'maintenance.rab.list') {
+        return {
+          status: 'success',
+          code: 200,
+          data: [
+            {
+              no_rab: 'RAB-20260908-1001',
+              no_laporan: 'MNT-20260908-001',
+              nopol: 'KT 5678 CD',
+              total_harga: 835000,
+              status_approval: 'APPROVED',
+              items: [
+                { item_pekerjaan: 'Ganti Oli Mesin Synthetic 10W-40 (4L)', qty: 1, harga_satuan: 385000, total_harga: 385000 },
+                { item_pekerjaan: 'Jasa Tune Up & Gurah Mesin Diesel', qty: 1, harga_satuan: 450000, total_harga: 450000 }
+              ]
+            }
+          ]
+        };
+      }
+
+      if (action === 'maintenance.spk.create') {
+        const noSPK = `SPK-${Date.now()}`;
+        return {
+          status: 'success',
+          code: 200,
+          message: `Surat Perintah Kerja ${noSPK} diterbitkan (Demo Mock).`,
+          data: {
+            no_spk: noSPK,
+            no_laporan: data.no_laporan,
+            status: 'TERBIT'
+          }
+        };
+      }
+
+      if (action === 'maintenance.summary.get' || action === 'maintenance.resume.get') {
+        return {
+          status: 'success',
+          code: 200,
+          data: {
+            totalLaporan: 2,
+            totalEstimasi: 1200000,
+            totalRealisasi: 450000,
+            statusCounts: { baru: 1, rab: 0, spk: 1, pengerjaan: 0, selesai: 1 },
+            bengkelRekananCount: 5
+          }
+        };
+      }
+
+      if (action === 'maintenance.document.upload') {
+        const fileId = `doc-demo-${Date.now()}`;
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Dokumen berhasil diunggah (Demo Mock).',
+          data: {
+            fileId: fileId,
+            fileName: data.fileName,
+            url: `https://drive.google.com/file/d/${fileId}/view`
+          }
+        };
+      }
+
+      if (action === 'maintenance.pdf.generate') {
+        const uid = data.uid || `DOC-${Date.now()}`;
+        return {
+          status: 'success',
+          code: 200,
+          message: `Dokumen resmi ${data.docType} (${uid}) siap diunduh (Demo Mock).`,
+          data: {
+            docType: data.docType,
+            uid: uid,
+            fileName: `${data.docType}_${uid}.pdf`,
+            url: `https://drive.google.com/file/d/pdf-${uid}/view`
+          }
+        };
+      }
+
+      if (action === 'maintenance.users.list') {
+        return {
+          status: 'success',
+          code: 200,
+          data: [
+            { email: 'admin@vamos.com', nama: 'System Administrator', role: 'SUPER_ADMIN', status: 'AKTIF' },
+            { email: 'mechanic1@vamos.com', nama: 'Bambang Mekanik', role: 'MECHANIC', status: 'AKTIF' },
+            { email: 'driver1@vamos.com', nama: 'Agus Driver', role: 'DRIVER', status: 'AKTIF' },
+            { email: 'ga@vamos.com', nama: 'Siti General Affair', role: 'GS1', status: 'AKTIF' }
+          ]
+        };
+      }
+
+      if (action === 'maintenance.users.toggle') {
+        return {
+          status: 'success',
+          code: 200,
+          message: `Status user ${data.email} berhasil diperbarui (Demo Mock).`,
+          data: {
+            email: data.email,
+            status: data.status || 'AKTIF'
+          }
+        };
+      }
+
+      if (action === 'maintenance.harsat.create' || action === 'maintenance.harsat.update') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Item Harsat berhasil diproses (Demo Mock).',
+          data: { kode_item: data.kode_item || 'HST-999' }
+        };
+      }
+
+      if (action === 'maintenance.harsat.delete') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Item Harsat berhasil dinonaktifkan (Demo Mock).',
+          data: { kode_item: data.kode_item }
+        };
+      }
+
+      if (action === 'maintenance.vehicles.create' || action === 'maintenance.vehicles.update') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Data armada berhasil diperbarui (Demo Mock).',
+          data: { nopol: data.nopol }
+        };
+      }
+
       if (MOCK_DB[action]) {
         return {
           status: 'success',

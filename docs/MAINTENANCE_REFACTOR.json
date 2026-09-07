@@ -3,13 +3,13 @@
   "title": "Maintenance Module Refactor Issue Tracker",
   "project": "VAMOS FMS - SmartServ Maintenance Refactor",
   "version": "1.0.0",
-  "last_updated": "2026-09-07T15:30:00+07:00",
+  "last_updated": "2026-09-07T17:44:49.930Z",
   "milestones": [
     {
       "id": "M-PHASE-1",
       "title": "Fase 1 — Secret Remediation (PALING URGENT)",
       "description": "Pindahkan semua hardcoded secrets dan IDs sebelum apapun dikerjakan.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "MTN-001",
@@ -26,7 +26,7 @@
             "Tidak ada secret tersisa di repo."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-002",
@@ -42,7 +42,7 @@
             "Tidak ada hardcoded ID."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -50,7 +50,7 @@
       "id": "M-PHASE-2",
       "title": "Fase 2 — Data Schema & Bug Fixes",
       "description": "Dokumentasikan skema semua sheet dan perbaiki bug yang diidentifikasi sebelum refactor logika.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "MTN-003",
@@ -59,14 +59,17 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Data",
-            "dependencies": ["MTN-001", "MTN-002"]
+            "dependencies": [
+              "MTN-001",
+              "MTN-002"
+            ]
           },
           "acceptance_criteria": [
             "Setiap sheet terdokumentasi (kolom, tipe, relasi).",
             "Relasi antar entitas jelas."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-004",
@@ -75,7 +78,9 @@
           "metadata": {
             "priority": "P0",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-003"]
+            "dependencies": [
+              "MTN-003"
+            ]
           },
           "acceptance_criteria": [
             "`updateLaporan` menyimpan status dengan benar.",
@@ -83,7 +88,7 @@
             "Unit test lulus."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-005",
@@ -92,14 +97,16 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-003"]
+            "dependencies": [
+              "MTN-003"
+            ]
           },
           "acceptance_criteria": [
             "Store state didefinisikan untuk semua entitas.",
             "Terintegrasi dengan VAMOS authStore."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -107,7 +114,7 @@
       "id": "M-PHASE-3",
       "title": "Fase 3 — Authentication & Access Control",
       "description": "Ganti sistem auth custom dengan VAMOS auth token.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "MTN-006",
@@ -116,7 +123,10 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Auth",
-            "dependencies": ["MTN-001", "SEC-001"]
+            "dependencies": [
+              "MTN-001",
+              "SEC-001"
+            ]
           },
           "acceptance_criteria": [
             "Custom login dihapus.",
@@ -124,7 +134,7 @@
             "`appsscript.json` access diset ke ANYONE."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-007",
@@ -133,14 +143,16 @@
           "metadata": {
             "priority": "P2",
             "area": "Maintenance / Auth",
-            "dependencies": ["MTN-006"]
+            "dependencies": [
+              "MTN-006"
+            ]
           },
           "acceptance_criteria": [
             "Data user dimigrasikan ke USER_ROLES.",
             "Script migrasi dibuat dan didokumentasikan."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -148,7 +160,7 @@
       "id": "M-PHASE-4",
       "title": "Fase 4 — Core Business API (GAS Backend Refactor)",
       "description": "Pisahkan semua logika bisnis dari macro.js monolith menjadi RPC actions.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "MTN-008",
@@ -157,7 +169,11 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-004", "MTN-006", "BE-001"]
+            "dependencies": [
+              "MTN-004",
+              "MTN-006",
+              "BE-001"
+            ]
           },
           "acceptance_criteria": [
             "Actions: `maintenance.laporan.*` dibuat.",
@@ -165,7 +181,7 @@
             "Idempotent UID generation."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-009",
@@ -174,13 +190,15 @@
           "metadata": {
             "priority": "P2",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-008"]
+            "dependencies": [
+              "MTN-008"
+            ]
           },
           "acceptance_criteria": [
             "Actions: `maintenance.harsat.*` dibuat."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-010",
@@ -189,13 +207,15 @@
           "metadata": {
             "priority": "P2",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-008"]
+            "dependencies": [
+              "MTN-008"
+            ]
           },
           "acceptance_criteria": [
             "Actions: `maintenance.vehicles.*` dibuat."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-011",
@@ -204,7 +224,11 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-008", "MTN-009", "MTN-010"]
+            "dependencies": [
+              "MTN-008",
+              "MTN-009",
+              "MTN-010"
+            ]
           },
           "acceptance_criteria": [
             "Actions: `maintenance.rab.*` dibuat.",
@@ -212,7 +236,7 @@
             "Satu function saveRAB."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-012",
@@ -221,14 +245,16 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-011"]
+            "dependencies": [
+              "MTN-011"
+            ]
           },
           "acceptance_criteria": [
             "Actions: `maintenance.spk.*` dibuat.",
             "Relasi no_rab -> no_spk tervalidasi."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-013",
@@ -237,13 +263,15 @@
           "metadata": {
             "priority": "P2",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-012"]
+            "dependencies": [
+              "MTN-012"
+            ]
           },
           "acceptance_criteria": [
             "Action `maintenance.resume.get` mengembalikan statistik dari sheet data raw."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -251,7 +279,7 @@
       "id": "M-PHASE-5",
       "title": "Fase 5 — Document Upload & PDF",
       "description": "Refactor upload dokumen ke pola VAMOS yang konsisten.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "MTN-014",
@@ -260,14 +288,17 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-002", "MTN-012"]
+            "dependencies": [
+              "MTN-002",
+              "MTN-012"
+            ]
           },
           "acceptance_criteria": [
             "Satu endpoint upload handling PDF dan gambar dengan permission ANYONE_WITH_LINK VIEW.",
             "Audit trail write di sheet `reference` dengan fitur rollback."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-015",
@@ -276,13 +307,15 @@
           "metadata": {
             "priority": "P2",
             "area": "Maintenance / Backend",
-            "dependencies": ["MTN-014"]
+            "dependencies": [
+              "MTN-014"
+            ]
           },
           "acceptance_criteria": [
             "Generasi RAB dan SPK via GAS sheet-to-pdf."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -290,7 +323,7 @@
       "id": "M-PHASE-6",
       "title": "Fase 6 — Frontend Vue 3 Maintenance Module",
       "description": "Buat UI Maintenance module di VAMOS FMS SPA menggantikan 10 file HTML lama.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "MTN-016",
@@ -299,13 +332,16 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-013", "FE-002"]
+            "dependencies": [
+              "MTN-013",
+              "FE-002"
+            ]
           },
           "acceptance_criteria": [
             "Metrics widgets untuk laporan, RAB, SPK."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-017",
@@ -314,13 +350,16 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-008", "MTN-016"]
+            "dependencies": [
+              "MTN-008",
+              "MTN-016"
+            ]
           },
           "acceptance_criteria": [
             "Tabel dan Form CRUD Laporan dengan status timeline."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-018",
@@ -329,13 +368,16 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-011", "MTN-017"]
+            "dependencies": [
+              "MTN-011",
+              "MTN-017"
+            ]
           },
           "acceptance_criteria": [
             "Tabel item RAB dinamis, integrasi harsat, auto-calc total."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-019",
@@ -344,13 +386,16 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-012", "MTN-018"]
+            "dependencies": [
+              "MTN-012",
+              "MTN-018"
+            ]
           },
           "acceptance_criteria": [
             "List RAB ready, dan form pembuat SPK."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-020",
@@ -359,13 +404,16 @@
           "metadata": {
             "priority": "P2",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-009", "FE-002"]
+            "dependencies": [
+              "MTN-009",
+              "FE-002"
+            ]
           },
           "acceptance_criteria": [
             "CRUD interface untuk harsat."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-021",
@@ -374,13 +422,16 @@
           "metadata": {
             "priority": "P2",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-010", "FE-002"]
+            "dependencies": [
+              "MTN-010",
+              "FE-002"
+            ]
           },
           "acceptance_criteria": [
             "CRUD interface untuk master data kendaraan."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-022",
@@ -389,13 +440,15 @@
           "metadata": {
             "priority": "P3",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-006"]
+            "dependencies": [
+              "MTN-006"
+            ]
           },
           "acceptance_criteria": [
             "Halaman view info user dan role dari VAMOS."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-023",
@@ -404,13 +457,15 @@
           "metadata": {
             "priority": "P2",
             "area": "Maintenance / Frontend",
-            "dependencies": ["MTN-007"]
+            "dependencies": [
+              "MTN-007"
+            ]
           },
           "acceptance_criteria": [
             "Hanya admin. Tabel user untuk toggle aktivasi."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -418,7 +473,7 @@
       "id": "M-PHASE-7",
       "title": "Fase 7 — Audit, Testing & Cutover",
       "description": "Uji dan migrasi data.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "MTN-024",
@@ -427,13 +482,16 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Testing",
-            "dependencies": ["MTN-008", "MTN-013"]
+            "dependencies": [
+              "MTN-008",
+              "MTN-013"
+            ]
           },
           "acceptance_criteria": [
             "Test CRUD berhasil, dan status machine berjalan benar."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-025",
@@ -442,13 +500,16 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Testing",
-            "dependencies": ["MTN-016", "MTN-024"]
+            "dependencies": [
+              "MTN-016",
+              "MTN-024"
+            ]
           },
           "acceptance_criteria": [
             "Flow end-to-end bekerja dari Laporan sampai SPK."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "MTN-026",
@@ -457,13 +518,15 @@
           "metadata": {
             "priority": "P1",
             "area": "Maintenance / Deployment",
-            "dependencies": ["MTN-025"]
+            "dependencies": [
+              "MTN-025"
+            ]
           },
           "acceptance_criteria": [
             "Semua old data ditransfer dan folder di markdown `DEPRECATED`."
           ],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     }

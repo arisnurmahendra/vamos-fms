@@ -24,7 +24,7 @@ var DatabaseRouter = (function() {
     if (key === 'MASTER') propName = 'MAIN_SPREADSHEET_ID';
 
     var scriptProps = PropertiesService.getScriptProperties();
-    var id = scriptProps.getProperty(propName);
+    var id = scriptProps.getProperty(propName) || scriptProps.getProperty(key + '_SS_ID');
     
     if (id && id.trim().length > 0) {
       return id.trim();

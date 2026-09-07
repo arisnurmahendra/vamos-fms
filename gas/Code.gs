@@ -143,6 +143,68 @@ function apiDispatcher(payload) {
       case 'booking.outbox.list':
         return handleBookingOutboxList();
 
+      // Modul SmartServ Maintenance
+      case 'maintenance.report.submit':
+      case 'maintenance.laporan.submit':
+        return handleMaintenanceReportSubmit(sanitizedData, actor);
+
+      case 'maintenance.report.list':
+      case 'maintenance.laporan.list':
+        return handleMaintenanceReportList(sanitizedData);
+
+      case 'maintenance.report.update':
+      case 'maintenance.laporan.update':
+        return handleMaintenanceReportUpdate(sanitizedData, actor);
+
+      case 'maintenance.harsat.list':
+        return handleMaintenanceHarsatList();
+
+      case 'maintenance.harsat.create':
+        return handleMaintenanceHarsatCreate(sanitizedData, actor);
+
+      case 'maintenance.harsat.update':
+        return handleMaintenanceHarsatUpdate(sanitizedData, actor);
+
+      case 'maintenance.harsat.delete':
+        return handleMaintenanceHarsatDelete(sanitizedData, actor);
+
+      case 'maintenance.vehicles.list':
+        return handleMaintenanceVehiclesList();
+
+      case 'maintenance.vehicles.create':
+        return handleMaintenanceVehiclesCreate(sanitizedData, actor);
+
+      case 'maintenance.vehicles.update':
+        return handleMaintenanceVehiclesUpdate(sanitizedData, actor);
+
+      case 'maintenance.rab.submit':
+        return handleMaintenanceRABSubmit(sanitizedData, actor);
+
+      case 'maintenance.rab.list':
+        return handleMaintenanceRABList(sanitizedData);
+
+      case 'maintenance.spk.create':
+        return handleMaintenanceSPKCreate(sanitizedData, actor);
+
+      case 'maintenance.spk.list':
+        return handleMaintenanceSPKList();
+
+      case 'maintenance.summary.get':
+      case 'maintenance.resume.get':
+        return handleMaintenanceSummaryGet();
+
+      case 'maintenance.document.upload':
+        return handleMaintenanceDocumentUpload(sanitizedData, actor);
+
+      case 'maintenance.pdf.generate':
+        return handleMaintenancePDFGenerate(sanitizedData, actor);
+
+      case 'maintenance.users.list':
+        return handleMaintenanceUsersList();
+
+      case 'maintenance.users.toggle':
+        return handleMaintenanceUserToggle(sanitizedData, actor);
+
       default:
         return responseError(404, "Action not found: " + action);
     }
