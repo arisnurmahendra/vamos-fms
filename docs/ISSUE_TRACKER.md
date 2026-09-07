@@ -12,15 +12,15 @@
 | Metrik | Jumlah |
 | :--- | :--- |
 | **Total Issues** | 28 |
-| **Closed (Selesai)** | 8 |
-| **Open (Dalam Pengerjaan/Backlog)** | 20 |
-| **P0 Critical Open** | 1 |
+| **Closed (Selesai)** | 9 |
+| **Open (Dalam Pengerjaan/Backlog)** | 19 |
+| **P0 Critical Open** | 0 |
 
 ---
 
 ## 🎯 Milestones Roadmap
 
-- [x] **Milestone 1 — Repository Infrastructure & Build System** (Status: In Progress)
+- [x] **Milestone 1 — Repository Infrastructure & Build System** (Status: Closed)
 - [x] **Milestone 2 — Backend Architecture, RPC & Middleware** (Status: In Progress)
 - [x] **Milestone 3 — Frontend Architecture, Routing & Offline State** (Status: In Progress)
 - [ ] **Milestone 4 — Security, Authentication & Access Control** (Status: Open)
@@ -198,16 +198,28 @@ Menginstal dependensi utama aplikasi frontend Vue Router, Pinia State Store, dan
 - **Priority:** P0  
 - **Area:** Infrastructure  
 - **Dependencies:** INF-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- `vue-router` versi 4+ terinstal di `package.json`.  
-- `pinia` versi 2+ terinstal di `package.json`.  
-- `cross-env` terinstal sebagai `devDependency`.  
-- `npm run build:demo` dan `npm run build:prod` berjalan lancar.  
+- [x] `vue-router` versi 4+ terinstal di `package.json`.  
+- [x] `pinia` versi 2+ terinstal di `package.json`.  
+- [x] `cross-env` terinstal sebagai `devDependency` / `dependency`.  
+- [x] `npm run build:demo` dan `npm run build:prod` berjalan lancar.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `package.json` and `vite.config.js` on `main` (GitHub Issue #6 closed).
+
+Implementation notes:
+- Dependensi `vue-router` (^5.3.1), `pinia` (^4.0.3), dan `cross-env` (^10.1.0) aktif terpasang di `package.json`.
+- Konfigurasi `vite.config.js` diperbaiki menggunakan `viteSingleFile` dan `import.meta.dirname` untuk memastikan proses bundling berjalan mulus tanpa peringatan.
+
+Verification:
+- `npm run build:demo` => Sukses (singlefile `deploy/index.html` 65.26 kB)
+- `npm run build:prod` => Sukses (singlefile `deploy/index.html` 65.27 kB)
+
 
 ---
 

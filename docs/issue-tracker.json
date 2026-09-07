@@ -9,7 +9,7 @@
       "id": "M1",
       "title": "Milestone 1 — Repository Infrastructure & Build System",
       "description": "Setup core directory structure, Vite build configuration for single-file deployment, environment configuration, and base dependencies.",
-      "status": "In Progress",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "INF-001",
@@ -160,16 +160,28 @@
             "priority": "P0",
             "area": "Infrastructure",
             "dependencies": ["INF-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "vue-router versi 4+ terinstal di package.json.",
             "pinia versi 2+ terinstal di package.json.",
-            "cross-env terinstal sebagai devDependency.",
+            "cross-env terinstal sebagai devDependency / dependency.",
             "npm run build:demo dan npm run build:prod berjalan lancar."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Dependensi vue-router (^5.3.1), pinia (^4.0.3), dan cross-env (^10.1.0) aktif terpasang di package.json.",
+              "Konfigurasi vite.config.js diperbaiki menggunakan viteSingleFile dan import.meta.dirname untuk memastikan proses bundling berjalan mulus."
+            ],
+            "verification": [
+              "npm run build:demo => Sukses (singlefile deploy/index.html 65.26 kB)",
+              "npm run build:prod => Sukses (singlefile deploy/index.html 65.27 kB)"
+            ]
+          }
         }
       ]
     },
