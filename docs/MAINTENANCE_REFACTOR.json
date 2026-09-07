@@ -1,0 +1,471 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Maintenance Module Refactor Issue Tracker",
+  "project": "VAMOS FMS - SmartServ Maintenance Refactor",
+  "version": "1.0.0",
+  "last_updated": "2026-09-07T15:30:00+07:00",
+  "milestones": [
+    {
+      "id": "M-PHASE-1",
+      "title": "Fase 1 — Secret Remediation (PALING URGENT)",
+      "description": "Pindahkan semua hardcoded secrets dan IDs sebelum apapun dikerjakan.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "MTN-001",
+          "title": "Pindahkan AES Key ke Script Properties",
+          "objective": "AES key hardcoded di webcore.js baris 1. Pindahkan ke Script Properties untuk keamanan.",
+          "metadata": {
+            "priority": "P0",
+            "area": "Maintenance / Security",
+            "dependencies": []
+          },
+          "acceptance_criteria": [
+            "Variabel `ᗩrisՈurᗰahendra` dihapus dari source code.",
+            "Key dibaca dari `PropertiesService.getScriptProperties().getProperty('AES_ENCRYPTION_KEY')`.",
+            "Tidak ada secret tersisa di repo."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-002",
+          "title": "Pindahkan Spreadsheet ID dan Folder ID ke Script Properties",
+          "objective": "Spreadsheet ID dan Folder ID (IMG, PDF) di-hardcoded. Harus dipindah agar environment portabel.",
+          "metadata": {
+            "priority": "P0",
+            "area": "Maintenance / Config",
+            "dependencies": []
+          },
+          "acceptance_criteria": [
+            "Script Properties: `MAINTENANCE_SS_ID`, `MAINTENANCE_FOLDER_IMG`, `MAINTENANCE_FOLDER_PDF` digunakan.",
+            "Tidak ada hardcoded ID."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "M-PHASE-2",
+      "title": "Fase 2 — Data Schema & Bug Fixes",
+      "description": "Dokumentasikan skema semua sheet dan perbaiki bug yang diidentifikasi sebelum refactor logika.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "MTN-003",
+          "title": "Audit & Dokumentasi Schema Semua Sheet Maintenance",
+          "objective": "Dokumentasikan struktur sheet lama (users, laporan, rab, spk, dll.) ke docs/MAINTENANCE_SCHEMA.md.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Data",
+            "dependencies": ["MTN-001", "MTN-002"]
+          },
+          "acceptance_criteria": [
+            "Setiap sheet terdokumentasi (kolom, tipe, relasi).",
+            "Relasi antar entitas jelas."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-004",
+          "title": "Perbaiki Bug Kritis di updateLaporan dan saveSPKDetailToSheet",
+          "objective": "Perbaiki bug status override (di set null) dan salah penempatan value array pada status_spk.",
+          "metadata": {
+            "priority": "P0",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-003"]
+          },
+          "acceptance_criteria": [
+            "`updateLaporan` menyimpan status dengan benar.",
+            "`saveSPKDetailToSheet` menyimpan status di cell yang benar.",
+            "Unit test lulus."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-005",
+          "title": "Design Maintenance Pinia Store Schema",
+          "objective": "Rancang state VAMOS untuk Maintenance (Laporan, Harsat, RAB, SPK, Vehicles).",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-003"]
+          },
+          "acceptance_criteria": [
+            "Store state didefinisikan untuk semua entitas.",
+            "Terintegrasi dengan VAMOS authStore."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "M-PHASE-3",
+      "title": "Fase 3 — Authentication & Access Control",
+      "description": "Ganti sistem auth custom dengan VAMOS auth token.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "MTN-006",
+          "title": "Ganti Custom Auth dengan VAMOS Google Identity Auth",
+          "objective": "Ganti auth AES/localStorage custom dengan VAMOS FMS handshake.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Auth",
+            "dependencies": ["MTN-001", "SEC-001"]
+          },
+          "acceptance_criteria": [
+            "Custom login dihapus.",
+            "Role-based control lewat VAMOS.",
+            "`appsscript.json` access diset ke ANYONE."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-007",
+          "title": "Migrate User Management ke VAMOS USER_ROLES",
+          "objective": "Pindahkan user dari usercontrol ke USER_ROLES VAMOS.",
+          "metadata": {
+            "priority": "P2",
+            "area": "Maintenance / Auth",
+            "dependencies": ["MTN-006"]
+          },
+          "acceptance_criteria": [
+            "Data user dimigrasikan ke USER_ROLES.",
+            "Script migrasi dibuat dan didokumentasikan."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "M-PHASE-4",
+      "title": "Fase 4 — Core Business API (GAS Backend Refactor)",
+      "description": "Pisahkan semua logika bisnis dari macro.js monolith menjadi RPC actions.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "MTN-008",
+          "title": "Laporan CRUD & Status Machine sebagai RPC Actions",
+          "objective": "Port CRUD laporan ke VAMOS actions dan betulkan logic status machine.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-004", "MTN-006", "BE-001"]
+          },
+          "acceptance_criteria": [
+            "Actions: `maintenance.laporan.*` dibuat.",
+            "Status transisi benar.",
+            "Idempotent UID generation."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-009",
+          "title": "Harsat CRUD sebagai RPC Actions",
+          "objective": "Port CRUD harga satuan ke VAMOS actions.",
+          "metadata": {
+            "priority": "P2",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-008"]
+          },
+          "acceptance_criteria": [
+            "Actions: `maintenance.harsat.*` dibuat."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-010",
+          "title": "Vehicles CRUD sebagai RPC Actions",
+          "objective": "Port master kendaraan ke VAMOS actions.",
+          "metadata": {
+            "priority": "P2",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-008"]
+          },
+          "acceptance_criteria": [
+            "Actions: `maintenance.vehicles.*` dibuat."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-011",
+          "title": "RAB sebagai RPC Actions",
+          "objective": "Konsolidasi RAB functions dan UID generation ke actions.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-008", "MTN-009", "MTN-010"]
+          },
+          "acceptance_criteria": [
+            "Actions: `maintenance.rab.*` dibuat.",
+            "Idempotent UID generation.",
+            "Satu function saveRAB."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-012",
+          "title": "SPK sebagai RPC Actions",
+          "objective": "Port fungsi SPK ke actions.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-011"]
+          },
+          "acceptance_criteria": [
+            "Actions: `maintenance.spk.*` dibuat.",
+            "Relasi no_rab -> no_spk tervalidasi."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-013",
+          "title": "Resume & Summary Data sebagai RPC Actions",
+          "objective": "Port resume/summary metrics dashboard ke actions.",
+          "metadata": {
+            "priority": "P2",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-012"]
+          },
+          "acceptance_criteria": [
+            "Action `maintenance.resume.get` mengembalikan statistik dari sheet data raw."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "M-PHASE-5",
+      "title": "Fase 5 — Document Upload & PDF",
+      "description": "Refactor upload dokumen ke pola VAMOS yang konsisten.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "MTN-014",
+          "title": "Unified Document Upload Action",
+          "objective": "Buat single action `maintenance.document.upload`.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-002", "MTN-012"]
+          },
+          "acceptance_criteria": [
+            "Satu endpoint upload handling PDF dan gambar dengan permission ANYONE_WITH_LINK VIEW.",
+            "Audit trail write di sheet `reference` dengan fitur rollback."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-015",
+          "title": "PDF Generation dari Template Sheet",
+          "objective": "Pindah generasi PDF dari html2pdf client ke GAS convertSheetToPDF server.",
+          "metadata": {
+            "priority": "P2",
+            "area": "Maintenance / Backend",
+            "dependencies": ["MTN-014"]
+          },
+          "acceptance_criteria": [
+            "Generasi RAB dan SPK via GAS sheet-to-pdf."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "M-PHASE-6",
+      "title": "Fase 6 — Frontend Vue 3 Maintenance Module",
+      "description": "Buat UI Maintenance module di VAMOS FMS SPA menggantikan 10 file HTML lama.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "MTN-016",
+          "title": "MaintenanceDashboardView.vue",
+          "objective": "Dashboard landing dan metrics summary.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-013", "FE-002"]
+          },
+          "acceptance_criteria": [
+            "Metrics widgets untuk laporan, RAB, SPK."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-017",
+          "title": "LaporanView.vue",
+          "objective": "Halaman manajemen laporan kerusakan.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-008", "MTN-016"]
+          },
+          "acceptance_criteria": [
+            "Tabel dan Form CRUD Laporan dengan status timeline."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-018",
+          "title": "RABView.vue",
+          "objective": "Halaman RAB Editor.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-011", "MTN-017"]
+          },
+          "acceptance_criteria": [
+            "Tabel item RAB dinamis, integrasi harsat, auto-calc total."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-019",
+          "title": "SPKView.vue",
+          "objective": "Halaman pembuat SPK.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-012", "MTN-018"]
+          },
+          "acceptance_criteria": [
+            "List RAB ready, dan form pembuat SPK."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-020",
+          "title": "HarsatView.vue",
+          "objective": "Halaman CRUD master harga satuan.",
+          "metadata": {
+            "priority": "P2",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-009", "FE-002"]
+          },
+          "acceptance_criteria": [
+            "CRUD interface untuk harsat."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-021",
+          "title": "VehiclesView.vue",
+          "objective": "Halaman CRUD master vehicles.",
+          "metadata": {
+            "priority": "P2",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-010", "FE-002"]
+          },
+          "acceptance_criteria": [
+            "CRUD interface untuk master data kendaraan."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-022",
+          "title": "ProfileView.vue",
+          "objective": "User Profile viewer.",
+          "metadata": {
+            "priority": "P3",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-006"]
+          },
+          "acceptance_criteria": [
+            "Halaman view info user dan role dari VAMOS."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-023",
+          "title": "UserManagerView.vue",
+          "objective": "VAMOS Role Manager / User Admin Panel.",
+          "metadata": {
+            "priority": "P2",
+            "area": "Maintenance / Frontend",
+            "dependencies": ["MTN-007"]
+          },
+          "acceptance_criteria": [
+            "Hanya admin. Tabel user untuk toggle aktivasi."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "M-PHASE-7",
+      "title": "Fase 7 — Audit, Testing & Cutover",
+      "description": "Uji dan migrasi data.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "MTN-024",
+          "title": "Automated Test Suite untuk Maintenance Module",
+          "objective": "Port dan implement test suite untuk RPC actions.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Testing",
+            "dependencies": ["MTN-008", "MTN-013"]
+          },
+          "acceptance_criteria": [
+            "Test CRUD berhasil, dan status machine berjalan benar."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-025",
+          "title": "Smoke Test E2E Maintenance Flow",
+          "objective": "Lakukan test E2E keseluruhan sistem.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Testing",
+            "dependencies": ["MTN-016", "MTN-024"]
+          },
+          "acceptance_criteria": [
+            "Flow end-to-end bekerja dari Laporan sampai SPK."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "MTN-026",
+          "title": "Data Migration Script & Production Cutover",
+          "objective": "Migrasi data dari old spreadsheet dan archieve folder old_apps/Maintenance.",
+          "metadata": {
+            "priority": "P1",
+            "area": "Maintenance / Deployment",
+            "dependencies": ["MTN-025"]
+          },
+          "acceptance_criteria": [
+            "Semua old data ditransfer dan folder di markdown `DEPRECATED`."
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    }
+  ]
+}
