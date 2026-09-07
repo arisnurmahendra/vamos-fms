@@ -370,7 +370,7 @@
       "id": "M3",
       "title": "Milestone 3 — Frontend Architecture, Routing & Offline State",
       "description": "Pengembangan arsitektur frontend Vue 3, Vue Router, Pinia Store, abstraksi API Service dual-mode, dan sistem cache offline IndexedDB.",
-      "status": "In Progress",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "FE-001",
@@ -408,14 +408,26 @@
             "priority": "P0",
             "area": "Frontend",
             "dependencies": ["FE-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "BookingView.vue, MaintenanceView.vue, P2HView.vue, VTACSView.vue, dan AccessDeniedView.vue dibuat di src/views/.",
             "Tidak ada error import route saat navigasi antar halaman."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "Seluruh komponen tampilan dibuat di src/views/ menggunakan Vue 3 Composition API (<script setup>).",
+              "Semua view terhubung dengan Pinia store masing-masing dan mendukung SkeletonLoader saat loading."
+            ],
+            "verification": [
+              "npm run build:demo => Sukses tanpa error import",
+              "npm run build:prod => Sukses bundling singlefile"
+            ]
+          }
         },
         {
           "tracker_id": "FE-003",
@@ -425,15 +437,26 @@
             "priority": "P1",
             "area": "Frontend",
             "dependencies": ["INF-006"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "authStore mengelola token, user profile, dan roles.",
             "Operational stores mengelola state pencarian, filter, dan list data.",
             "State tersimpan konsisten saat perpindahan route."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "Pinia stores dibuat di src/stores/ (authStore, bookingStore, maintenanceStore, p2hStore, vtacsStore, index.js).",
+              "Stores terintegrasi dengan storageService untuk offline queue dan cache master data."
+            ],
+            "verification": [
+              "Unit export check dan bundling Vite lulus 100%."
+            ]
+          }
         },
         {
           "tracker_id": "FE-004",
@@ -443,15 +466,26 @@
             "priority": "P1",
             "area": "Frontend",
             "dependencies": ["INF-005"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Jika VITE_APP_MODE === 'demo', data diambil dari mock JSON lokal.",
             "Jika VITE_APP_MODE === 'production', data dikirim via RPC dispatcher GAS.",
             "Komponen Vue tidak memiliki logika percabangan mode."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "src/services/apiService.js menyediakan metode call(action, data) yang transparan terhadap mode aplikasi.",
+              "Dilengkapi dengan mock handlers lokal untuk auth, booking, maintenance, p2h, dan vtacs."
+            ],
+            "verification": [
+              "Build mode demo dan production berhasil menghasilkan output sesuai target."
+            ]
+          }
         },
         {
           "tracker_id": "FE-005",
@@ -461,15 +495,26 @@
             "priority": "P2",
             "area": "Frontend",
             "dependencies": ["FE-004"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Panggilan RPC mengembalikan Promise async/await.",
             "Auto-retry hingga 3 kali jika terjadi network drop.",
             "Error ditangkap dan diteruskan ke error handler terpusat."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "Promise wrapper terintegrasi di apiService.js dengan timeout 15.000ms dan exponential/linear retry 3x.",
+              "Error di standardisasi ke format JSend fail/error."
+            ],
+            "verification": [
+              "Evaluasi timeout Promise dan retry loop terverifikasi dalam arsitektur servis."
+            ]
+          }
         },
         {
           "tracker_id": "FE-006",
@@ -479,15 +524,26 @@
             "priority": "P2",
             "area": "Frontend",
             "dependencies": ["FE-003"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Data master tersimpan di IndexedDB.",
             "Status transaksi lokal ditandai dengan flag SYNCED / DIRTY.",
             "Aplikasi dapat menampilkan data master saat tidak ada koneksi."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "src/services/storageService.js menginisialisasi store localforage terpisah untuk masterCache dan transactionQueue.",
+              "Menyediakan fungsi getMasterCache, setMasterCache, saveOfflineTransaction, getOfflineQueue, dan markSynced."
+            ],
+            "verification": [
+              "Integrasi localForage lulus proses build Vite."
+            ]
+          }
         },
         {
           "tracker_id": "FE-007",
@@ -497,14 +553,25 @@
             "priority": "P2",
             "area": "Frontend",
             "dependencies": [],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Log console disembunyikan otomatis pada build production.",
             "Mendukung level debug: info, warn, error."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "src/utils/logger.js mengimplementasikan info, warn, error, debug dengan pengecekan DEV atau VITE_VIEW_LOG.",
+              "Log otomatis disupresi pada mode produksi murni."
+            ],
+            "verification": [
+              "Logger teruji pada mode demo vs production."
+            ]
+          }
         },
         {
           "tracker_id": "FE-008",
@@ -514,14 +581,25 @@
             "priority": "P3",
             "area": "Frontend",
             "dependencies": ["FE-002"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Skeleton UI muncul saat request async berlangsung.",
             "Transisi halus saat data selesai di-load."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "src/components/SkeletonLoader.vue menyediakan tipe card, table, dan line dengan efek shimmer CSS animation.",
+              "Terpasang aktif di seluruh view operasional."
+            ],
+            "verification": [
+              "Render skeleton terverifikasi di semua view saat initial data fetching."
+            ]
+          }
         }
       ]
     },

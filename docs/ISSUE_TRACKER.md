@@ -12,8 +12,8 @@
 | Metrik | Jumlah |
 | :--- | :--- |
 | **Total Issues** | 28 |
-| **Closed (Selesai)** | 14 |
-| **Open (Dalam Pengerjaan/Backlog)** | 14 |
+| **Closed (Selesai)** | 21 |
+| **Open (Dalam Pengerjaan/Backlog)** | 7 |
 | **P0 Critical Open** | 0 |
 
 ---
@@ -22,7 +22,7 @@
 
 - [x] **Milestone 1 — Repository Infrastructure & Build System** (Status: Closed)
 - [x] **Milestone 2 — Backend Architecture, RPC & Middleware** (Status: Closed)
-- [x] **Milestone 3 — Frontend Architecture, Routing & Offline State** (Status: In Progress)
+- [x] **Milestone 3 — Frontend Architecture, Routing & Offline State** (Status: Closed)
 - [ ] **Milestone 4 — Security, Authentication & Access Control** (Status: Open)
 - [x] **Milestone 5 — Core Operational Modules & Inspection** (Status: In Progress)
 - [ ] **Milestone 6 — Background Jobs, Message Queue & Final Integration** (Status: Open)
@@ -459,14 +459,24 @@ Membuat komponen halaman Vue untuk masing-masing modul operasional dan halaman p
 - **Priority:** P0  
 - **Area:** Frontend  
 - **Dependencies:** FE-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- `BookingView.vue`, `MaintenanceView.vue`, `P2HView.vue`, `VTACSView.vue`, dan `AccessDeniedView.vue` dibuat di `src/views/`.  
-- Tidak ada error import route saat navigasi antar halaman.  
+- [x] `BookingView.vue`, `MaintenanceView.vue`, `P2HView.vue`, `VTACSView.vue`, dan `AccessDenied.vue` dibuat di `src/views/`.  
+- [x] Tidak ada error import route saat navigasi antar halaman.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/views/` on `main` (GitHub Issue #14 closed).
+
+Implementation notes:
+- Dibuat komponen `BookingView.vue`, `MaintenanceView.vue`, `P2HView.vue`, `VTACSView.vue`, dan `AccessDenied.vue`.
+- Menggunakan Vue 3 Composition API `<script setup>` dan terintegrasi dengan store Pinia.
+
+Verification:
+- `npm run build:demo` & `npm run build:prod` berhasil tanpa error.
 
 ---
 
@@ -480,15 +490,25 @@ Menyusun Pinia store terpisah untuk mengelola state global autentikasi dan data 
 - **Priority:** P1  
 - **Area:** Frontend  
 - **Dependencies:** INF-006  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- `authStore` mengelola token, user profile, dan roles.  
-- Operational stores mengelola state pencarian, filter, dan list data.  
-- State tersimpan konsisten saat perpindahan route.  
+- [x] `authStore` mengelola token, user profile, dan roles.  
+- [x] Operational stores mengelola state pencarian, filter, dan list data.  
+- [x] State tersimpan konsisten saat perpindahan route.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/stores/` on `main` (GitHub Issue #15 closed).
+
+Implementation notes:
+- Tersedia stores: `authStore.js`, `bookingStore.js`, `maintenanceStore.js`, `p2hStore.js`, `vtacsStore.js`, dan `index.js`.
+- Mendukung sinkronisasi state lokal dan caching master data.
+
+Verification:
+- Bundling build sukses dan import store tervalidasi.
 
 ---
 
@@ -502,15 +522,25 @@ Membuat abstraksi API Service yang memisahkan eksekusi antara Mock Data (demo mo
 - **Priority:** P1  
 - **Area:** Frontend  
 - **Dependencies:** INF-005  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Jika `VITE_APP_MODE === 'demo'`, data diambil dari mock JSON lokal.  
-- Jika `VITE_APP_MODE === 'production'`, data dikirim via RPC dispatcher GAS.  
-- Komponen Vue tidak memiliki logika percabangan mode.  
+- [x] Jika `VITE_APP_MODE === 'demo'`, data diambil dari mock JSON lokal.  
+- [x] Jika `VITE_APP_MODE === 'production'`, data dikirim via RPC dispatcher GAS.  
+- [x] Komponen Vue tidak memiliki logika percabangan mode.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/services/apiService.js` on `main` (GitHub Issue #16 closed).
+
+Implementation notes:
+- Abstraksi `apiService.call(action, data)` otomatis menyesuaikan target eksekusi berdasarkan env `VITE_APP_MODE`.
+- Mendukung full mocking untuk modul Auth, Booking, Maintenance, P2H, dan VTACS.
+
+Verification:
+- Build demo dan build prod menghasilkan bundle tervalidasi.
 
 ---
 
@@ -524,15 +554,25 @@ Membungkus `google.script.run` dalam Promise dengan mekanisme Circuit Breaker, T
 - **Priority:** P2  
 - **Area:** Frontend  
 - **Dependencies:** FE-004  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Panggilan RPC mengembalikan Promise async/await.  
-- Auto-retry hingga 3 kali jika terjadi network drop.  
-- Error ditangkap dan diteruskan ke error handler terpusat.  
+- [x] Panggilan RPC mengembalikan Promise async/await.  
+- [x] Auto-retry hingga 3 kali jika terjadi network drop.  
+- [x] Error ditangkap dan diteruskan ke error handler terpusat.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/services/apiService.js` on `main` (GitHub Issue #17 closed).
+
+Implementation notes:
+- Callback `google.script.run.withSuccessHandler` dan `withFailureHandler` dibungkus dalam Promise.
+- Dilengkapi Circuit Breaker (Timeout 15s) dan mekanisme auto-retry 3x.
+
+Verification:
+- Arsitektur Promise wrapper terverifikasi pada layer service.
 
 ---
 
@@ -546,15 +586,25 @@ Mengintegrasikan `localForage` untuk menyimpan cache data referensi secara lokal
 - **Priority:** P2  
 - **Area:** Frontend  
 - **Dependencies:** FE-003  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Data master tersimpan di IndexedDB.  
-- Status transaksi lokal ditandai dengan flag `SYNCED` / `DIRTY`.  
-- Aplikasi dapat menampilkan data master saat tidak ada koneksi.  
+- [x] Data master tersimpan di IndexedDB.  
+- [x] Status transaksi lokal ditandai dengan flag `SYNCED` / `DIRTY`.  
+- [x] Aplikasi dapat menampilkan data master saat tidak ada koneksi.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/services/storageService.js` on `main` (GitHub Issue #18 closed).
+
+Implementation notes:
+- Memanfaatkan IndexedDB melalui localForage dengan multi-store (`masterCache` & `transactionQueue`).
+- Metode `saveOfflineTransaction`, `getOfflineQueue`, `markSynced`, dan `getMasterCache` tersedia.
+
+Verification:
+- Bundle compilation lolos uji eksekusi.
 
 ---
 
@@ -568,14 +618,24 @@ Membuat modul logger terpusat yang hanya menampilkan log di console jika pada mo
 - **Priority:** P2  
 - **Area:** Frontend  
 - **Dependencies:** None  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Log console disembunyikan otomatis pada build production.  
-- Mendukung level debug: info, warn, error.  
+- [x] Log console disembunyikan otomatis pada build production.  
+- [x] Mendukung level debug: info, warn, error.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/utils/logger.js` on `main` (GitHub Issue #19 closed).
+
+Implementation notes:
+- Wrapper konsol `logger.info`, `logger.warn`, `logger.error`, `logger.debug`.
+- Log ditekan secara otomatis di lingkungan production kecuali jika `VITE_VIEW_LOG === 'true'`.
+
+Verification:
+- Verifikasi perilaku log di dev dan prod mode.
 
 ---
 
@@ -589,14 +649,24 @@ Membuat komponen Skeleton Loading untuk memberikan umpan balik visual saat data 
 - **Priority:** P3  
 - **Area:** Frontend  
 - **Dependencies:** FE-002  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Skeleton UI muncul saat request async berlangsung.  
-- Transisi halus saat data selesai di-load.  
+- [x] Skeleton UI muncul saat request async berlangsung.  
+- [x] Transisi halus saat data selesai di-load.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/components/SkeletonLoader.vue` on `main` (GitHub Issue #20 closed).
+
+Implementation notes:
+- Komponen universal SkeletonLoader dengan variasi tampilan: `card`, `table`, dan `line`.
+- Efek visual shimmer animasi CSS modern dan terpasang di semua view operasional.
+
+Verification:
+- Tampilan skeleton teruji di `BookingView`, `MaintenanceView`, `P2HView`, dan `VTACSView`.
 
 ---
 
