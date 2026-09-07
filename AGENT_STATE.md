@@ -28,7 +28,9 @@
 | 4    | Strategi Autentikasi                    | ✅ Selesai     | 100%     |
 | 5    | Modul P2H (Issues #85 - #92)            | ✅ Selesai     | 100%     |
 | 6    | Modul V-TACS (Issues #93 - #100)        | ✅ Selesai     | 100%     |
-| 7    | Background Jobs & Integrasi Final       | ⬜ Belum mulai | 0%       |
+| 7    | Modul Booking Kendaraan (Issues #36 - #58)| ✅ Selesai   | 100%     |
+| 8    | Modul Maintenance (Issues #59 - #84)    | ⬜ Belum mulai | 0%       |
+| 9    | Background Jobs & Integrasi Final       | ⬜ Belum mulai | 0%       |
 
 ---
 
@@ -43,7 +45,7 @@
 | `App.vue`         | ✅ Ada       | Root layout: Header, status badge & RouterView   |
 | `style.css`       | ✅ Ada       | Global styles & variables                        |
 | `router/index.js` | ✅ Ada       | Route navigation guard (beforeEach) + 4 modul + AccessDenied |
-| `views/`          | ✅ Ada       | BookingView, MaintenanceView, P2HView (Full), VTACSView (Full), AccessDenied |
+| `views/`          | ✅ Ada       | BookingView (Full), MaintenanceView, P2HView (Full), VTACSView (Full), AccessDenied |
 | `components/`     | ✅ Ada       | SkeletonLoader.vue (card, table, line)           |
 | `stores/`         | ✅ Ada       | Pinia stores (auth, booking, maintenance, p2h, vtacs) |
 | `services/`       | ✅ Ada       | apiService.js (dual-mode RPC), storageService.js |
@@ -59,6 +61,7 @@
 | `Audit.gs`        | ✅ Ada       | recordAuditLog append-only with silent failsafe       |
 | `P2H.gs`          | ✅ Ada       | Schema P2H_Laporan (15 kolom), submit, reports.list & supervisor.followup |
 | `VTACS.gs`        | ✅ Ada       | Schema VTACS Sheets, anti-conflict lock, voucher request/redeem & reconcile |
+| `Booking.gs`      | ✅ Ada       | Schema datadb, state machine approval, HMAC WA token & CRUD |
 | `.claspignore`    | ✅ Ada       | Hanya allow *.gs, *.html, appsscript.json             |
 | `appsscript.json` | ✅ Ada       | Manifest GAS (V8 runtime, Asia/Jakarta)               |
 

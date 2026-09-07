@@ -111,6 +111,38 @@ function apiDispatcher(payload) {
       case 'vtacs.reconcile':
         return handleVTACSReconcile(sanitizedData);
 
+      // Modul Booking Kendaraan (Vehicle Booking System)
+      case 'booking.master.get':
+        return handleBookingMasterGet();
+
+      case 'booking.submit':
+        return handleBookingSubmit(sanitizedData, actor);
+
+      case 'booking.list':
+        return handleBookingList(sanitizedData, actor, userRole);
+
+      case 'booking.approval.process':
+        return handleBookingApprovalProcess(sanitizedData, actor, userRole);
+
+      case 'booking.wa.approve':
+        return handleBookingWAApprove(sanitizedData);
+
+      case 'booking.nopol.list':
+      case 'booking.nopol.create':
+      case 'booking.nopol.delete':
+        return handleBookingNopolCRUD(sanitizedData, action);
+
+      case 'booking.user.list':
+      case 'booking.user.create':
+        return handleBookingUserCRUD(sanitizedData, action);
+
+      case 'booking.atasan.list':
+      case 'booking.atasan.create':
+        return handleBookingAtasanCRUD(sanitizedData, action);
+
+      case 'booking.outbox.list':
+        return handleBookingOutboxList();
+
       default:
         return responseError(404, "Action not found: " + action);
     }

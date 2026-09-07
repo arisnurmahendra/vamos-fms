@@ -265,6 +265,60 @@ export const apiService = {
         };
       }
 
+      if (action === 'booking.master.get') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Success (Demo Mock Booking Master)',
+          data: {
+            nopolList: [
+              { nopol: 'KT 1234 AB', unit: 'Operasional Site', jenis: 'Toyota Hilux 4x4 Double Cabin', status: 'AKTIF' },
+              { nopol: 'KT 5678 CD', unit: 'Management Site', jenis: 'Mitsubishi Triton 4x4', status: 'AKTIF' },
+              { nopol: 'KT 9012 EF', unit: 'HSE / Safety Patrol', jenis: 'Toyota Hilux Single Cabin', status: 'AKTIF' },
+              { nopol: 'KT 3456 GH', unit: 'General Affairs', jenis: 'Toyota Avanza 1.5G', status: 'AKTIF' }
+            ],
+            userList: [
+              { nama: 'Budi Santoso', ndk: 'NPK-10021', departemen: 'Engineering', noWa: '6281234567890' },
+              { nama: 'Agus Prayitno', ndk: 'NPK-10022', departemen: 'Operasional', noWa: '6281234567891' },
+              { nama: 'Siti Aminah', ndk: 'NPK-10023', departemen: 'HSE Safety', noWa: '6281234567892' }
+            ],
+            atasanList: [
+              { nama: 'Ir. Bambang Wijaya', jabatan: 'Site Manager (SM)', noWa: '628119988771', status: 'AKTIF' },
+              { nama: 'Rahmat Hidayat', jabatan: 'General Services Head (GS)', noWa: '628119988772', status: 'AKTIF' },
+              { nama: 'Dwi Prasetyo', jabatan: 'Kepala Pool Kendaraan', noWa: '628119988773', status: 'AKTIF' }
+            ]
+          }
+        };
+      }
+
+      if (action === 'booking.submit') {
+        const uid = `BKG-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(1000 + Math.random() * 9000)}`;
+        return {
+          status: 'success',
+          code: 200,
+          message: `Permohonan peminjaman KR ${uid} berhasil diajukan (Demo Mock).`,
+          data: {
+            uid: uid,
+            nopol: data.nopol,
+            peminjam: data.peminjam,
+            status: 'PENDING_AM'
+          }
+        };
+      }
+
+      if (action === 'booking.approval.process' || action === 'booking.wa.approve') {
+        const nextStatus = data.action === 'REJECT' ? 'REJECTED' : 'PENDING_GS1';
+        return {
+          status: 'success',
+          code: 200,
+          message: `Status booking ${data.uid} berhasil diperbarui menjadi ${nextStatus} (Demo Mock).`,
+          data: {
+            uid: data.uid,
+            status: nextStatus
+          }
+        };
+      }
+
       if (MOCK_DB[action]) {
         return {
           status: 'success',

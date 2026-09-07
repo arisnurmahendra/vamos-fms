@@ -53,7 +53,9 @@ var PUBLIC_ACTIONS = {
   'ping': true,
   'auth.handshake': true,
   'system.info': true,
-  'p2h.master.get': true
+  'p2h.master.get': true,
+  'booking.master.get': true,
+  'booking.wa.approve': true
 };
 
 /**
@@ -61,10 +63,19 @@ var PUBLIC_ACTIONS = {
  */
 var ACTION_ROLE_MAP = {
   // Booking Module
+  'booking.master.get': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER', 'DRIVER'],
   'booking.submit': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER', 'DRIVER'],
   'booking.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER', 'DRIVER'],
   'booking.approval.process': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2'],
-  'booking.nopol.manage': ['SUPER_ADMIN', 'ADMIN'],
+  'booking.wa.approve': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER'],
+  'booking.nopol.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER', 'DRIVER'],
+  'booking.nopol.create': ['SUPER_ADMIN', 'ADMIN', 'GS1'],
+  'booking.nopol.delete': ['SUPER_ADMIN', 'ADMIN'],
+  'booking.user.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER'],
+  'booking.user.create': ['SUPER_ADMIN', 'ADMIN'],
+  'booking.atasan.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER'],
+  'booking.atasan.create': ['SUPER_ADMIN', 'ADMIN'],
+  'booking.outbox.list': ['SUPER_ADMIN', 'ADMIN', 'GS1', 'AM'],
   
   // Maintenance Module
   'maintenance.report.submit': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'USER', 'DRIVER', 'MECHANIC'],
