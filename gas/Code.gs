@@ -90,6 +90,12 @@ function apiDispatcher(payload) {
       case 'p2h.kendaraan.submit':
         return handleP2HKendaraanSubmit(sanitizedData, actor);
 
+      case 'p2h.reports.list':
+        return handleP2HReportsList(sanitizedData);
+
+      case 'p2h.supervisor.followup':
+        return handleP2HFollowUpUpdate(sanitizedData, actor);
+
       default:
         return responseError(404, "Action not found: " + action);
     }

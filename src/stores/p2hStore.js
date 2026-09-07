@@ -14,8 +14,12 @@ export const useP2HStore = defineStore('p2h', {
     subkonList: [],
     kendaraanList: [],
     lastVehicleProfile: JSON.parse(localStorage.getItem('VAMOS_P2H_LAST_VEHICLE') || 'null'),
+    reports: [],
+    summary: { total: 0, fit: 0, unfit: 0 },
+    offlineQueue: [],
     isLoading: false,
     isSubmitting: false,
+    isSyncing: false,
     error: null,
     lastSubmitResult: null
   }),
@@ -57,6 +61,84 @@ export const useP2HStore = defineStore('p2h', {
     },
 
     /**
+     * Mengambil daftar laporan inspeksi P2H untuk dasbor GA & SPV
+     */
+    async fetchReports(filter = {}) {
+      this.isLoading = true;
+      try {
+        const res = await apiService.call('p2h.reports.list', filter);
+        if (res.status === 'success' && res.data) {
+          this.reports = res.data.reports || [];
+          this.summary = res.data.summary || { total: 0, fit: 0, unfit: 0 };
+        }
+      } catch (err) {
+        this.error = err.message;
+        logger.error('Failed to fetch P2H reports:', err);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    /**
+     * Memuat antrean offline P2H dari IndexedDB
+     */
+    async loadOfflineQueue() {
+      this.offlineQueue = await storageService.getOfflineQueue('P2H');
+    },
+
+    /**
+     * Sinkronisasi antrean offline P2H ke backend saat sinyal internet kembali
+     */
+    async syncOfflineQueue() {
+      if (!navigator.onLine) return;
+      this.isSyncing = true;
+      try {
+        const queue = await storageService.getOfflineQueue('P2H');
+        for (const task of queue) {
+          if (task.status === 'PENDING') {
+            try {
+              const res = await apiService.call(task.action, task.payload);
+              if (res.status === 'success') {
+                await storageService.updateQueueStatus('P2H', task.id, 'SYNCED');
+              }
+            } catch (syncErr) {
+              logger.warn(`Failed syncing task ${task.id}:`, syncErr);
+            }
+          }
+        }
+        await storageService.clearSyncedQueue('P2H');
+        await this.loadOfflineQueue();
+      } catch (err) {
+        logger.error('Sync offline queue failed:', err);
+      } finally {
+        this.isSyncing = false;
+      }
+    },
+
+    /**
+     * Follow up temuan NOK supervisor
+     */
+    async followUpReport(uid, actionStatus, followUpNotes) {
+      this.isSubmitting = true;
+      try {
+        const res = await apiService.call('p2h.supervisor.followup', {
+          uid,
+          actionStatus,
+          followUpNotes
+        });
+        if (res.status === 'success') {
+          await this.fetchReports();
+          return res;
+        }
+      } catch (err) {
+        this.error = err.message;
+        throw err;
+      } finally {
+        this.isSubmitting = false;
+      }
+    },
+
+    /**
      * Mengirimkan formulir P2H ke backend
      */
     async submitP2H(formData) {
@@ -74,6 +156,7 @@ export const useP2HStore = defineStore('p2h', {
             nopol: formData.nopol,
             jenis: formData.jenis
           });
+          await this.loadOfflineQueue();
           return res;
         } else {
           throw new Error(res.message || 'Gagal menyimpan laporan.');

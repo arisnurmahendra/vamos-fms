@@ -148,6 +148,48 @@ export const apiService = {
         };
       }
 
+      if (action === 'p2h.reports.list') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Success (Demo Mock Data)',
+          data: {
+            reports: [
+              {
+                UID: 'P2H-DEMO-001',
+                Tanggal: new Date().toISOString().split('T')[0],
+                Observator: 'Budi Santoso',
+                Nopol: 'KT 1234 AB',
+                Merk: 'Toyota Hilux',
+                Status_Kelayakan: 'FIT',
+                Total_Item_NOK: 0,
+                Catatan_Tambahan: 'Kondisi kendaraan sangat prima'
+              },
+              {
+                UID: 'P2H-DEMO-002',
+                Tanggal: new Date().toISOString().split('T')[0],
+                Observator: 'Agus Prayitno',
+                Nopol: 'KT 5678 CD',
+                Merk: 'Mitsubishi Triton',
+                Status_Kelayakan: 'UNFIT',
+                Total_Item_NOK: 2,
+                Catatan_Tambahan: 'Wiper karet sobek dan lampu sein kiri mati'
+              }
+            ],
+            summary: { total: 2, fit: 1, unfit: 1 }
+          }
+        };
+      }
+
+      if (action === 'p2h.supervisor.followup') {
+        return {
+          status: 'success',
+          code: 200,
+          message: `Tindak lanjut supervisor berhasil dicatat (Demo Mock).`,
+          data: { uid: data.uid, status: data.actionStatus }
+        };
+      }
+
       if (MOCK_DB[action]) {
         return {
           status: 'success',

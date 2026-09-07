@@ -241,3 +241,125 @@ function handleP2HKendaraanSubmit(data, actor) {
     lock.releaseLock();
   }
 }
+
+/**
+ * [P2H-007] RPC Action: Mendapatkan daftar laporan P2H untuk dasbor GA & Supervisor
+ * @param {Object} filter { nopol, status, tanggal }
+ * @returns {Object} JSend response
+ */
+function handleP2HReportsList(filter) {
+  try {
+    var ss;
+    try {
+      ss = DatabaseRouter.openSpreadsheet(P2H_MODULE_KEY);
+    } catch (e) {
+      ss = DatabaseRouter.openSpreadsheet('MASTER');
+    }
+
+    var sheet = ss.getSheetByName(P2H_SHEET_LAPORAN);
+    if (!sheet || sheet.getLastRow() <= 1) {
+      return responseSuccess({ reports: [], summary: { total: 0, fit: 0, unfit: 0 } });
+    }
+
+    var data = sheet.getDataRange().getValues();
+    var headers = data[0];
+    var reports = [];
+    var totalFit = 0;
+    var totalUnfit = 0;
+
+    for (var i = 1; i < data.length; i++) {
+      var row = data[i];
+      var reportObj = {};
+      for (var h = 0; h < headers.length; h++) {
+        reportObj[headers[h]] = row[h];
+      }
+
+      var status = String(reportObj['Status_Kelayakan'] || '').toUpperCase();
+      if (status === 'FIT') totalFit++;
+      if (status === 'UNFIT') totalUnfit++;
+
+      // Filter jika ada parameter pencarian
+      if (filter) {
+        if (filter.status && status !== String(filter.status).toUpperCase()) continue;
+        if (filter.nopol && String(reportObj['Nopol']).indexOf(filter.nopol) === -1) continue;
+      }
+
+      reports.push(reportObj);
+    }
+
+    return responseSuccess({
+      reports: reports.reverse(), // Laporan terbaru di atas
+      summary: {
+        total: reports.length,
+        fit: totalFit,
+        unfit: totalUnfit
+      }
+    });
+
+  } catch (err) {
+    console.error("[P2H ERROR in handleP2HReportsList]:", err.message);
+    return responseError(500, "Gagal mengambil daftar laporan P2H: " + err.message);
+  }
+}
+
+/**
+ * [P2H-008] RPC Action: Supervisor follow-up temuan NOK kendaraan
+ * @param {Object} data { uid, actionStatus, followUpNotes }
+ * @param {string} actor
+ * @returns {Object} JSend response
+ */
+function handleP2HFollowUpUpdate(data, actor) {
+  if (!data || !data.uid) {
+    return responseError(422, "UID laporan P2H diperlukan untuk tindak lanjut.");
+  }
+
+  try {
+    var ss;
+    try {
+      ss = DatabaseRouter.openSpreadsheet(P2H_MODULE_KEY);
+    } catch (e) {
+      ss = DatabaseRouter.openSpreadsheet('MASTER');
+    }
+
+    var sheet = ss.getSheetByName(P2H_SHEET_LAPORAN);
+    if (!sheet) return responseError(404, "Sheet P2H_Laporan tidak ditemukan.");
+
+    var values = sheet.getDataRange().getValues();
+    var uidColIdx = 0; // Header UID di kolom 1 (indeks 0)
+
+    for (var i = 1; i < values.length; i++) {
+      if (String(values[i][uidColIdx]) === String(data.uid)) {
+        var rowNum = i + 1;
+        var newStatus = data.actionStatus || 'PERBAIKAN'; // PERBAIKAN | CLEAR
+        var notes = sanitizeInput(data.followUpNotes || '');
+
+        // Update kolom Catatan_Tambahan (indeks 12 -> kolom 13)
+        var existingCatatan = String(values[i][12] || '');
+        var updatedCatatan = existingCatatan + " | [SPV " + (actor || 'GA') + ": " + newStatus + " - " + notes + "]";
+        
+        sheet.getRange(rowNum, 13).setValue(updatedCatatan);
+
+        recordAuditLog(
+          actor, 
+          'P2H_SUPERVISOR_FOLLOWUP', 
+          'P2H', 
+          { uid: data.uid, status: newStatus, notes: notes }, 
+          'SUCCESS'
+        );
+
+        return responseSuccess({
+          uid: data.uid,
+          status: newStatus,
+          message: "Tindak lanjut supervisor untuk " + data.uid + " berhasil disimpan."
+        });
+      }
+    }
+
+    return responseError(404, "Laporan P2H dengan UID " + data.uid + " tidak ditemukan.");
+
+  } catch (err) {
+    console.error("[P2H ERROR in handleP2HFollowUpUpdate]:", err.message);
+    return responseError(500, "Gagal memperbarui tindak lanjut P2H: " + err.message);
+  }
+}
+

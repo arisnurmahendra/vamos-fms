@@ -75,6 +75,8 @@ var ACTION_ROLE_MAP = {
   // P2H Module
   'p2h.kendaraan.submit': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS1'],
   'p2h.kendaraan.list': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS1', 'AM'],
+  'p2h.reports.list': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS1', 'AM', 'GS_ADMIN'],
+  'p2h.supervisor.followup': ['SUPER_ADMIN', 'ADMIN', 'GS1', 'AM', 'GS_ADMIN'],
   
   // V-TACS Module
   'vtacs.voucher.request': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS_ADMIN'],

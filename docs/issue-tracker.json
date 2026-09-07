@@ -837,15 +837,27 @@
             "priority": "P1",
             "area": "P2H",
             "dependencies": ["FE-002", "BE-010"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Checklist kelaikan fisik kendaraan (rem, ban, oli, lampu, dll.) dapat diisi cepat.",
             "Sistem otomatis menandai kendaraan TIDAK LAIK jika ada poin kritis yang gagal.",
-            "Laporan ringkasan P2H harian siap diunduh."
+            "Laporan ringkasan P2H harian siap diunduh / dipantau di dasbor GA dan ditindaklanjuti Supervisor."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "Backend GAS schema P2H_Laporan (15 kolom), p2h.kendaraan.submit, p2h.reports.list, dan p2h.supervisor.followup.",
+              "Frontend Vue 3 component P2HView.vue mencakup Form Checklist 5 area observasi, Dasbor GA (FIT vs UNFIT), dan Validasi Supervisor.",
+              "Offline-first cache dengan IndexedDB localForage dan antrean sinkronisasi background saat online kembali."
+            ],
+            "verification": [
+              "Backend unit test test_p2h_phase2.cjs dan Vite production build sukses 100%."
+            ]
+          }
         },
         {
           "tracker_id": "MOD-004",

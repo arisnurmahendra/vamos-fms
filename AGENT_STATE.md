@@ -55,7 +55,7 @@
 | `Security.gs`     | ✅ Ada       | verifySessionToken + RBAC + sanitizeInput             |
 | `Database.gs`     | ✅ Ada       | DatabaseRouter multi-spreadsheet DAL                  |
 | `Audit.gs`        | ✅ Ada       | recordAuditLog append-only with silent failsafe       |
-| `P2H.gs`          | ✅ Ada       | Schema P2H_Laporan & endpoint p2h.kendaraan.submit    |
+| `P2H.gs`          | ✅ Ada       | Schema P2H_Laporan (15 kolom), submit, reports.list & supervisor.followup |
 | `.claspignore`    | ✅ Ada       | Hanya allow *.gs, *.html, appsscript.json             |
 | `appsscript.json` | ✅ Ada       | Manifest GAS (V8 runtime, Asia/Jakarta)               |
 
