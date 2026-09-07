@@ -79,7 +79,10 @@ var ACTION_ROLE_MAP = {
   'p2h.supervisor.followup': ['SUPER_ADMIN', 'ADMIN', 'GS1', 'AM', 'GS_ADMIN'],
   
   // V-TACS Module
+  'vtacs.master.get': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'VENDOR_POM', 'GS_ADMIN'],
+  'vtacs.voucher.list': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'VENDOR_POM', 'GS_ADMIN'],
   'vtacs.voucher.request': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS_ADMIN'],
+  'vtacs.voucher.redeem': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'VENDOR_POM', 'GS_ADMIN'],
   'vtacs.voucher.report': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'VENDOR_POM', 'GS_ADMIN'],
   'vtacs.reconcile': ['SUPER_ADMIN', 'ADMIN', 'GS_ADMIN']
 };

@@ -190,6 +190,81 @@ export const apiService = {
         };
       }
 
+      if (action === 'vtacs.master.get') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Success (Demo Mock Data)',
+          data: {
+            vouchers: [
+              { code: 'VCH-2026-001', nopol: 'KT 1234 AB', fuelQuota: 50, nominal: 500000, status: 'AVAILABLE', pom: 'POM-01' },
+              { code: 'VCH-2026-002', nopol: 'KT 5678 CD', fuelQuota: 60, nominal: 600000, status: 'AVAILABLE', pom: 'POM-02' },
+              { code: 'VCH-2026-003', nopol: 'KT 9012 EF', fuelQuota: 40, nominal: 400000, status: 'REDEEMED', pom: 'POM-01' }
+            ],
+            pomList: [
+              { kode: 'POM-01', nama: 'SPBU 61.751.01 Ring Road', lokasi: 'Samarinda', saldo: 15000000, terpakai: 2500000, status: 'AKTIF' },
+              { kode: 'POM-02', nama: 'SPBU 64.752.02 Loa Janan', lokasi: 'Kutai Kartanegara', saldo: 20000000, terpakai: 4100000, status: 'AKTIF' },
+              { kode: 'POM-03', nama: 'SPBU 61.753.03 Balikpapan KM 13', lokasi: 'Balikpapan', saldo: 18000000, terpakai: 3200000, status: 'AKTIF' }
+            ]
+          }
+        };
+      }
+
+      if (action === 'vtacs.voucher.request') {
+        const newCode = `VCH-DEMO-${Date.now()}`;
+        return {
+          status: 'success',
+          code: 200,
+          message: `Voucher ${newCode} berhasil diterbitkan (Demo Mock).`,
+          data: {
+            code: newCode,
+            nopol: data.nopol,
+            fuelQuota: data.kuotaLiter,
+            nominal: data.kuotaLiter * 12500,
+            status: 'AVAILABLE'
+          }
+        };
+      }
+
+      if (action === 'vtacs.voucher.redeem') {
+        const voucherCode = data.code || data.voucherCode || 'VCH-UNKNOWN';
+        return {
+          status: 'success',
+          code: 200,
+          message: `Voucher ${voucherCode} berhasil dicairkan/diredeem di ${data.station || 'POM-01'} (Demo Mock).`,
+          data: {
+            txId: `TX-BBM-${Date.now()}`,
+            voucherCode: voucherCode,
+            liter: data.literDiisi || 50,
+            nominal: data.nominal || 500000,
+            station: data.station || 'POM-01'
+          }
+        };
+      }
+
+      if (action === 'vtacs.reconcile') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Success (Demo Mock Reconcile)',
+          data: {
+            transactions: [
+              { txId: 'TX-BBM-001', voucher: 'VCH-2026-003', kodePom: 'POM-01', nopol: 'KT 9012 EF', driver: 'Budi Santoso', liter: 40, nominal: 400000, timestamp: '2026-09-07T14:30:00Z' },
+              { txId: 'TX-BBM-002', voucher: 'VCH-2026-001', kodePom: 'POM-01', nopol: 'KT 1234 AB', driver: 'Agus Prayitno', liter: 50, nominal: 500000, timestamp: '2026-09-08T09:15:00Z' }
+            ],
+            pomBalances: [
+              { kode: 'POM-01', nama: 'SPBU 61.751.01 Ring Road', saldo: 15000000, terpakai: 2500000, sisa: 12500000 },
+              { kode: 'POM-02', nama: 'SPBU 64.752.02 Loa Janan', saldo: 20000000, terpakai: 4100000, sisa: 15900000 }
+            ],
+            summary: {
+              totalTransaksi: 2,
+              totalLiters: 90,
+              totalNominal: 900000
+            }
+          }
+        };
+      }
+
       if (MOCK_DB[action]) {
         return {
           status: 'success',
@@ -218,8 +293,8 @@ export const apiService = {
       const response = await callGasRpc(payload);
       return response;
     } catch (err) {
-      // Jika offline dan aksi adalah submit, simpan ke antrean IndexedDB otomatis
-      if (!navigator.onLine && action.includes('.submit')) {
+      // Jika offline dan aksi adalah submit atau redeem, simpan ke antrean IndexedDB otomatis
+      if (!navigator.onLine && (action.includes('.submit') || action.includes('.redeem'))) {
         const moduleKey = action.split('.')[0].toUpperCase();
         await storageService.enqueueOfflineTask(moduleKey, action, data);
         return {

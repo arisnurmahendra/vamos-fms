@@ -3,13 +3,13 @@
   "title": "VTACS_DEVELOPMENT Issue Tracker",
   "project": "VAMOS FMS - V-TACS",
   "version": "1.0.0",
-  "last_updated": "2026-09-07T21:55:00+07:00",
+  "last_updated": "2026-09-08T00:25:00+07:00",
   "milestones": [
     {
       "id": "VTC-PHASE-1",
       "title": "Fase 1 — Arsitektur Data & Keamanan (Backend)",
       "description": "Menghindari double-spending dan manipulasi voucher.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "VTC-001",
@@ -18,7 +18,7 @@
           "metadata": { "priority": "P1", "area": "Backend Data", "dependencies": [] },
           "acceptance_criteria": ["Tab Master Voucher dibuat", "Tab Master POM dibuat", "Tab Transaksi dibuat"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "VTC-002",
@@ -27,7 +27,7 @@
           "metadata": { "priority": "P1", "area": "Backend API", "dependencies": ["VTC-001"] },
           "acceptance_criteria": ["Mekanisme service lock", "Cek ketersediaan Voucher", "Update saldo POM otomatis"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -35,7 +35,7 @@
       "id": "VTC-PHASE-2",
       "title": "Fase 2 — Offline Mechanism & Caching",
       "description": "Integrasi IndexedDB untuk area POM minim sinyal.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "VTC-003",
@@ -44,7 +44,7 @@
           "metadata": { "priority": "P1", "area": "Frontend", "dependencies": [] },
           "acceptance_criteria": ["Integrasi localForage", "Versioning check master data"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "VTC-004",
@@ -53,7 +53,7 @@
           "metadata": { "priority": "P1", "area": "Frontend", "dependencies": ["VTC-003"] },
           "acceptance_criteria": ["Data persist saat tab ditutup", "Background worker sync"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -61,7 +61,7 @@
       "id": "VTC-PHASE-3",
       "title": "Fase 3 — UI Pelaporan Lapangan",
       "description": "Form lapangan untuk input operasional BBM.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "VTC-005",
@@ -70,7 +70,7 @@
           "metadata": { "priority": "P2", "area": "UI/UX", "dependencies": [] },
           "acceptance_criteria": ["Input nominal dan POM tujuan", "Mendapat voucher virtual"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "VTC-006",
@@ -79,7 +79,7 @@
           "metadata": { "priority": "P1", "area": "UI/UX", "dependencies": ["VTC-004"] },
           "acceptance_criteria": ["Debounce input Nomor Voucher", "Input Detail Pemakaian", "Fitur foto struk"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     },
@@ -87,7 +87,7 @@
       "id": "VTC-PHASE-4",
       "title": "Fase 4 — Dasbor Rekonsiliasi Finansial",
       "description": "Dasbor pemisahan GA dan Vendor POM.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "VTC-007",
@@ -96,7 +96,7 @@
           "metadata": { "priority": "P1", "area": "Frontend", "dependencies": ["VTC-006"] },
           "acceptance_criteria": ["Sisa saldo POM per titik", "Pemakaian BBM per unit kendaraan"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         },
         {
           "tracker_id": "VTC-008",
@@ -105,7 +105,7 @@
           "metadata": { "priority": "P2", "area": "Frontend", "dependencies": ["VTC-006"] },
           "acceptance_criteria": ["Akses terisolasi per POM", "Rekap transaksi liter/nominal", "Export invoice"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed"
         }
       ]
     }

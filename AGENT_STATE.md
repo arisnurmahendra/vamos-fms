@@ -1,6 +1,6 @@
 # 📊 AGENT STATE — VAMOS FMS
 
-> **Terakhir diperbarui:** 2026-09-07 10:28 WIB
+> **Terakhir diperbarui:** 2026-09-08 00:25 WIB
 >
 > File ini merekam **status terkini** proyek. Agent WAJIB membaca file ini sebelum mulai bekerja dan WAJIB memperbaruinya setelah menyelesaikan task.
 > Aturan ketika menjalankan promt dari user:
@@ -26,7 +26,9 @@
 | 2    | Arsitektur Backend & Middleware         | ✅ Selesai     | 100%     |
 | 3    | Arsitektur Frontend & State             | ✅ Selesai     | 100%     |
 | 4    | Strategi Autentikasi                    | ✅ Selesai     | 100%     |
-| 5    | Background Jobs & Integrasi Final       | ⬜ Belum mulai | 0%       |
+| 5    | Modul P2H (Issues #85 - #92)            | ✅ Selesai     | 100%     |
+| 6    | Modul V-TACS (Issues #93 - #100)        | ✅ Selesai     | 100%     |
+| 7    | Background Jobs & Integrasi Final       | ⬜ Belum mulai | 0%       |
 
 ---
 
@@ -41,7 +43,7 @@
 | `App.vue`         | ✅ Ada       | Root layout: Header, status badge & RouterView   |
 | `style.css`       | ✅ Ada       | Global styles & variables                        |
 | `router/index.js` | ✅ Ada       | Route navigation guard (beforeEach) + 4 modul + AccessDenied |
-| `views/`          | ✅ Ada       | BookingView, MaintenanceView, P2HView, VTACSView, AccessDenied |
+| `views/`          | ✅ Ada       | BookingView, MaintenanceView, P2HView (Full), VTACSView (Full), AccessDenied |
 | `components/`     | ✅ Ada       | SkeletonLoader.vue (card, table, line)           |
 | `stores/`         | ✅ Ada       | Pinia stores (auth, booking, maintenance, p2h, vtacs) |
 | `services/`       | ✅ Ada       | apiService.js (dual-mode RPC), storageService.js |
@@ -56,6 +58,7 @@
 | `Database.gs`     | ✅ Ada       | DatabaseRouter multi-spreadsheet DAL                  |
 | `Audit.gs`        | ✅ Ada       | recordAuditLog append-only with silent failsafe       |
 | `P2H.gs`          | ✅ Ada       | Schema P2H_Laporan (15 kolom), submit, reports.list & supervisor.followup |
+| `VTACS.gs`        | ✅ Ada       | Schema VTACS Sheets, anti-conflict lock, voucher request/redeem & reconcile |
 | `.claspignore`    | ✅ Ada       | Hanya allow *.gs, *.html, appsscript.json             |
 | `appsscript.json` | ✅ Ada       | Manifest GAS (V8 runtime, Asia/Jakarta)               |
 

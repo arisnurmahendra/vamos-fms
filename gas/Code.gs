@@ -96,6 +96,21 @@ function apiDispatcher(payload) {
       case 'p2h.supervisor.followup':
         return handleP2HFollowUpUpdate(sanitizedData, actor);
 
+      // V-TACS Module RPC Endpoints
+      case 'vtacs.master.get':
+      case 'vtacs.voucher.list':
+        return handleVTACSMasterGet();
+
+      case 'vtacs.voucher.request':
+        return handleVTACSVoucherRequest(sanitizedData, actor);
+
+      case 'vtacs.voucher.redeem':
+      case 'vtacs.voucher.report':
+        return handleVTACSRedeem(sanitizedData, actor);
+
+      case 'vtacs.reconcile':
+        return handleVTACSReconcile(sanitizedData);
+
       default:
         return responseError(404, "Action not found: " + action);
     }
