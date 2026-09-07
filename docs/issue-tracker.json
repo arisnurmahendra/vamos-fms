@@ -189,7 +189,7 @@
       "id": "M2",
       "title": "Milestone 2 — Backend Architecture, RPC & Middleware",
       "description": "Membangun backend Google Apps Script terpusat berbasis pola RPC dispatcher, standar respon JSend, sanitasi data, dan audit logging.",
-      "status": "In Progress",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "BE-001",
@@ -227,15 +227,25 @@
             "priority": "P2",
             "area": "Backend",
             "dependencies": ["BE-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "appsscript.json mendefinisikan runtimeVersion: V8.",
             "timeZone diatur ke Asia/Jakarta.",
             "oauthScopes dibatasi sesuai kebutuhan Spreadsheet dan Drive."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Manifest GAS dikonfigurasi dengan V8 runtime, zona waktu Asia/Jakarta, dan least-privilege scopes."
+            ],
+            "verification": [
+              "Validasi schema manifest JSON lulus 100%."
+            ]
+          }
         },
         {
           "tracker_id": "BE-003",
@@ -245,15 +255,27 @@
             "priority": "P1",
             "area": "Backend",
             "dependencies": ["BE-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Request tanpa token valid mengembalikan error HTTP 401 Unauthorized.",
             "Request dengan role yang tidak memadai mengembalikan error HTTP 403 Forbidden.",
             "Kegagalan autentikasi dicatat ke dalam Audit Trail."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Token sesi HMAC-SHA256 (verifySessionToken, generateSessionToken).",
+              "RBAC matrix (ACTION_ROLE_MAP, authorizeUserRole) untuk seluruh modul.",
+              "Logging otomatis kejadian UNAUTHORIZED dan FORBIDDEN ke sheet Audit_Logs."
+            ],
+            "verification": [
+              "Unit test Node.js VM sandbox lulus 100%."
+            ]
+          }
         },
         {
           "tracker_id": "BE-004",
@@ -263,14 +285,25 @@
             "priority": "P1",
             "area": "Backend",
             "dependencies": ["BE-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Semua string input yang dimulai dengan Karakter Formula (=, +, -, @) di-escape secara otomatis.",
             "Data yang tersimpan di Spreadsheet aman dari eksekusi formula berbahaya."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Fungsi sanitizeInput(data) memproses tipe primitif, array, dan objek bertingkat secara rekursif.",
+              "Menambahkan prefix tanda petik tunggal (') untuk menetralkan formula injection."
+            ],
+            "verification": [
+              "Unit test anti formula injection lulus 100%."
+            ]
+          }
         },
         {
           "tracker_id": "BE-005",
@@ -280,14 +313,26 @@
             "priority": "P1",
             "area": "Backend",
             "dependencies": ["BE-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Routing target spreadsheet terisolasi berdasarkan konfig ID.",
             "Error handling jika spreadsheet target tidak dapat diakses."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Modul DatabaseRouter menangani MASTER, BOOKING, MAINTENANCE, P2H, dan VTACS.",
+              "Pengambilan ID dinamis dari Script Properties dengan fallback default terkonfigurasi.",
+              "Method readData dan appendRowSafe (terintegrasi otomatis dengan sanitizeInput)."
+            ],
+            "verification": [
+              "Method inspection dan sintaks GAS valid."
+            ]
+          }
         },
         {
           "tracker_id": "BE-006",
@@ -297,15 +342,27 @@
             "priority": "P2",
             "area": "Backend",
             "dependencies": ["BE-001", "BE-005"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Audit log mencatat Timestamp ISO 8601, Actor Email, Action, Target, dan Payload.",
             "Sheet Audit_Logs terlindungi dari penyuntingan langsung.",
             "Kegagalan logger tidak menghentikan respon utama aplikasi (silent failsafe)."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Fungsi recordAuditLog mengarsipkan log ke sheet Audit_Logs pada MASTER spreadsheet.",
+              "Fungsi maskSensitivePayload melakukan masking otomatis pada kredensial, token, dan kunci enkripsi.",
+              "Silent failsafe try-catch melindungi respon utama dari kegagalan pencatatan audit."
+            ],
+            "verification": [
+              "Unit test masking payload dan sintaks audit logger lulus 100%."
+            ]
+          }
         }
       ]
     },

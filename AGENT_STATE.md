@@ -23,7 +23,7 @@
 | Fase | Nama                                    | Status         | Progress |
 | ---- | --------------------------------------- | -------------- | -------- |
 | 1    | Infrastruktur Repositori & Build System | ✅ Selesai     | 100%     |
-| 2    | Arsitektur Backend & Middleware         | 🔄 Sebagian    | 30%      |
+| 2    | Arsitektur Backend & Middleware         | ✅ Selesai     | 100%     |
 | 3    | Arsitektur Frontend & State             | 🔄 Sebagian    | 20%      |
 | 4    | Strategi Autentikasi                    | ⬜ Belum mulai | 0%       |
 | 5    | Background Jobs & Integrasi Final       | ⬜ Belum mulai | 0%       |
@@ -49,9 +49,12 @@
 
 | File              | Status       | Keterangan                                            |
 | ----------------- | ------------ | ----------------------------------------------------- |
-| `Code.gs`         | ✅ Ada       | doGet + apiDispatcher + responseSuccess/responseError |
-| `.claspignore`    | ✅ Ada       | Hanya allow _.gs, _.html, appsscript.json             |
-| `appsscript.json` | ⚠️ Belum ada | Manifest GAS belum dibuat                             |
+| `Code.gs`         | ✅ Ada       | doGet + apiDispatcher + full middleware pipeline      |
+| `Security.gs`     | ✅ Ada       | verifySessionToken + RBAC + sanitizeInput             |
+| `Database.gs`     | ✅ Ada       | DatabaseRouter multi-spreadsheet DAL                  |
+| `Audit.gs`        | ✅ Ada       | recordAuditLog append-only with silent failsafe       |
+| `.claspignore`    | ✅ Ada       | Hanya allow *.gs, *.html, appsscript.json             |
+| `appsscript.json` | ✅ Ada       | Manifest GAS (V8 runtime, Asia/Jakarta)               |
 
 ### Config (Root)
 

@@ -12,8 +12,8 @@
 | Metrik | Jumlah |
 | :--- | :--- |
 | **Total Issues** | 28 |
-| **Closed (Selesai)** | 9 |
-| **Open (Dalam Pengerjaan/Backlog)** | 19 |
+| **Closed (Selesai)** | 14 |
+| **Open (Dalam Pengerjaan/Backlog)** | 14 |
 | **P0 Critical Open** | 0 |
 
 ---
@@ -21,7 +21,7 @@
 ## 🎯 Milestones Roadmap
 
 - [x] **Milestone 1 — Repository Infrastructure & Build System** (Status: Closed)
-- [x] **Milestone 2 — Backend Architecture, RPC & Middleware** (Status: In Progress)
+- [x] **Milestone 2 — Backend Architecture, RPC & Middleware** (Status: Closed)
 - [x] **Milestone 3 — Frontend Architecture, Routing & Offline State** (Status: In Progress)
 - [ ] **Milestone 4 — Security, Authentication & Access Control** (Status: Open)
 - [x] **Milestone 5 — Core Operational Modules & Inspection** (Status: In Progress)
@@ -266,15 +266,24 @@ Menyiapkan manifest `appsscript.json` dengan konfigurasi `timeZone` Asia/Jakarta
 - **Priority:** P2  
 - **Area:** Backend  
 - **Dependencies:** BE-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- `appsscript.json` mendefinisikan `runtimeVersion: V8`.  
-- `timeZone` diatur ke `Asia/Jakarta`.  
-- `oauthScopes` dibatasi sesuai kebutuhan Spreadsheet dan Drive.  
+- [x] `appsscript.json` mendefinisikan `runtimeVersion: V8`.  
+- [x] `timeZone` diatur ke `Asia/Jakarta`.  
+- [x] `oauthScopes` dibatasi sesuai kebutuhan Spreadsheet, Drive, dan Userinfo.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `gas/appsscript.json` and `deploy/appsscript.json` on `main` (GitHub Issue #8 closed).
+
+Implementation notes:
+- Manifest GAS dikonfigurasi dengan V8 runtime, zona waktu Asia/Jakarta, dan least-privilege scopes.
+
+Verification:
+- Validasi schema manifest JSON lulus 100%.
 
 ---
 
@@ -288,15 +297,26 @@ Mengembangkan middleware backend untuk memvalidasi token sesi dan izin peran (ro
 - **Priority:** P1  
 - **Area:** Backend  
 - **Dependencies:** BE-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Request tanpa token valid mengembalikan error HTTP 401 Unauthorized.  
-- Request dengan role yang tidak memadai mengembalikan error HTTP 403 Forbidden.  
-- Kegagalan autentikasi dicatat ke dalam Audit Trail.  
+- [x] Request tanpa token valid mengembalikan error HTTP 401 Unauthorized.  
+- [x] Request dengan role yang tidak memadai mengembalikan error HTTP 403 Forbidden.  
+- [x] Kegagalan autentikasi dicatat ke dalam Audit Trail.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `gas/Security.gs` and `gas/Code.gs` on `main` (GitHub Issue #9 closed).
+
+Implementation notes:
+- Token sesi HMAC-SHA256 (`verifySessionToken`, `generateSessionToken`).
+- RBAC matrix (`ACTION_ROLE_MAP`, `authorizeUserRole`) untuk seluruh modul.
+- Logging otomatis kejadian UNAUTHORIZED dan FORBIDDEN ke sheet `Audit_Logs`.
+
+Verification:
+- Unit test Node.js VM sandbox lulus 100%.
 
 ---
 
@@ -310,14 +330,24 @@ Mengimplementasikan sanitasi masukan otomatis pada backend GAS untuk mencegah Fo
 - **Priority:** P1  
 - **Area:** Backend  
 - **Dependencies:** BE-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Semua string input yang dimulai dengan Karakter Formula (`=`, `+`, `-`, `@`) di-escape secara otomatis.  
-- Data yang tersimpan di Spreadsheet aman dari eksekusi formula berbahaya.  
+- [x] Semua string input yang dimulai dengan Karakter Formula (`=`, `+`, `-`, `@`, `\t`, `\r`) di-escape secara otomatis.  
+- [x] Data yang tersimpan di Spreadsheet aman dari eksekusi formula berbahaya.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `gas/Security.gs` on `main` (GitHub Issue #10 closed).
+
+Implementation notes:
+- Fungsi `sanitizeInput(data)` memproses tipe primitif, array, dan objek bertingkat (nested) secara rekursif.
+- Menambahkan prefix tanda petik tunggal (`'`) untuk menetralkan formula injection.
+
+Verification:
+- Unit test anti formula injection lulus 100%.
 
 ---
 
@@ -331,14 +361,25 @@ Membuat layer pengakses data yang mengarahkan operasi pembacaan/penulisan ke Spr
 - **Priority:** P1  
 - **Area:** Backend  
 - **Dependencies:** BE-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Routing target spreadsheet terisolasi berdasarkan konfig ID.  
-- Error handling jika spreadsheet target tidak dapat diakses.  
+- [x] Routing target spreadsheet terisolasi berdasarkan konfig ID.  
+- [x] Error handling jika spreadsheet target tidak dapat diakses.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `gas/Database.gs` on `main` (GitHub Issue #11 closed).
+
+Implementation notes:
+- Modul `DatabaseRouter` menangani `MASTER`, `BOOKING`, `MAINTENANCE`, `P2H`, dan `VTACS`.
+- Pengambilan ID dinamis dari Script Properties dengan fallback default terkonfigurasi.
+- Method `readData` dan `appendRowSafe` (terintegrasi otomatis dengan `sanitizeInput`).
+
+Verification:
+- Method inspection dan sintaks GAS valid.
 
 ---
 
@@ -352,15 +393,26 @@ Membangun sistem pemcatatan log transaksi mutasi (`INSERT`, `UPDATE`, `DELETE`) 
 - **Priority:** P2  
 - **Area:** Backend  
 - **Dependencies:** BE-001, BE-005  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Audit log mencatat Timestamp ISO 8601, Actor Email, Action, Target, dan Payload.  
-- Sheet `Audit_Logs` terlindungi dari penyuntingan langsung.  
-- Kegagalan logger tidak menghentikan respon utama aplikasi (silent failsafe).  
+- [x] Audit log mencatat Timestamp ISO 8601, Actor Email, Action, Target, dan Payload.  
+- [x] Sheet `Audit_Logs` terlindungi dari penyuntingan langsung.  
+- [x] Kegagalan logger tidak menghentikan respon utama aplikasi (silent failsafe).  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `gas/Audit.gs` on `main` (GitHub Issue #12 closed).
+
+Implementation notes:
+- Fungsi `recordAuditLog` mengarsipkan log ke sheet `Audit_Logs` pada MASTER spreadsheet.
+- Fungsi `maskSensitivePayload` melakukan masking otomatis pada kredensial, token, dan kunci enkripsi.
+- Silent failsafe try-catch melindungi respon utama dari kegagalan pencatatan audit.
+
+Verification:
+- Unit test masking payload dan sintaks audit logger lulus 100%.
 
 ---
 
