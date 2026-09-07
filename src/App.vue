@@ -35,7 +35,7 @@ const appMode = computed(() => {
 })
 
 onMounted(async () => {
-  await authStore.checkAuth()
+  await authStore.performHandshake()
 })
 </script>
 

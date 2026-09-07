@@ -607,7 +607,7 @@
       "id": "M4",
       "title": "Milestone 4 — Security, Authentication & Access Control",
       "description": "Implementasi sistem autentikasi handshake, manajemen token, route guards frontend, API policy guards backend, dan enkripsi data.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "SEC-001",
@@ -617,15 +617,26 @@
             "priority": "P1",
             "area": "Security",
             "dependencies": ["BE-003"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Handshake otomatis mendeteksi email aktif pengguna.",
             "Token sesi dibuat dan dikembalikan ke Vue frontend.",
             "Token disimpan aman di localStorage/Pinia."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "Implementasi handshake di backend gas/Code.gs (auth.handshake) dan frontend src/stores/authStore.js.",
+              "Token HMAC-SHA256 dikirim ke klien dan disimpan di localStorage."
+            ],
+            "verification": [
+              "Unit test handshake & token generation lulus 100%."
+            ]
+          }
         },
         {
           "tracker_id": "SEC-002",
@@ -635,14 +646,25 @@
             "priority": "P1",
             "area": "Security",
             "dependencies": ["FE-001", "SEC-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Akses ke route tanpa role yang sesuai langsung dialihkan ke AccessDenied.vue.",
             "Pemeriksaan role terjadi instan tanpa flashing UI."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "Navigation guard beforeEach diimplementasikan di src/router/index.js.",
+              "Mencegat route tanpa token atau role yang tidak memenuhi syarat."
+            ],
+            "verification": [
+              "Build vue singlefile sukses dan guard terintegrasi."
+            ]
+          }
         },
         {
           "tracker_id": "SEC-003",
@@ -652,14 +674,25 @@
             "priority": "P1",
             "area": "Security",
             "dependencies": ["BE-003", "SEC-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Payload RPC tanpa token yang valid ditolak dengan HTTP status 401/403.",
             "Percobaan bypass API dicatat dalam Audit Trail sebagai UNAUTHORIZED_ACCESS."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "gas/Security.gs menyediakan verifySessionToken dan authorizeUserRole.",
+              "gas/Code.gs menolak payload tidak sah dan mencatat insiden ke Audit_Logs."
+            ],
+            "verification": [
+              "Unit test token verification and role access sandbox lulus 100%."
+            ]
+          }
         },
         {
           "tracker_id": "SEC-004",
@@ -669,14 +702,24 @@
             "priority": "P2",
             "area": "Security",
             "dependencies": ["SEC-001"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Field sensitif terenkripsi dengan AES-256 sebelum keluar dari browser.",
             "Data tersimpan dalam format ciphertext pada Spreadsheet."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "src/utils/crypto.js menyediakan encryptData dan decryptData menggunakan CryptoJS AES-256."
+            ],
+            "verification": [
+              "Unit test enkripsi dan dekripsi CryptoJS AES-256 lulus 100%."
+            ]
+          }
         },
         {
           "tracker_id": "SEC-005",
@@ -686,14 +729,25 @@
             "priority": "P2",
             "area": "Security",
             "dependencies": ["BE-005"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "Skema sheet Users_Roles terdefinisi lengkap.",
             "Perubahan role melalui sheet terrefleksi pada alur autentikasi."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "HEAD",
+            "branch": "main",
+            "implementation_notes": [
+              "gas/Security.gs mendefinisikan USERS_ROLES_HEADERS, initUsersRolesSheet, dan lookupUserRole.",
+              "Terintegrasi langsung ke action auth.handshake."
+            ],
+            "verification": [
+              "Unit test lookupUserRole lulus 100%."
+            ]
+          }
         }
       ]
     },

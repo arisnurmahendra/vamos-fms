@@ -62,14 +62,16 @@ function apiDispatcher(payload) {
         });
 
       case 'auth.handshake':
-        // Initial handshake: membaca email pengguna aktif GAS dan generate token sesi
+        // [SEC-001 & SEC-005] Initial handshake: mendeteksi email aktif dan lookup role di Users_Roles
         var activeEmail = Session.getActiveUser().getEmail() || 'demo.user@app.com';
-        var assignedRole = 'USER'; // Default role, dapat divalidasi dengan Users_Roles sheet
+        var userRecord = lookupUserRole(activeEmail);
+        var assignedRole = (userRecord && userRecord.status === 'AKTIF') ? userRecord.role : 'USER';
         var newToken = generateSessionToken(activeEmail, assignedRole, 24);
         recordAuditLog(activeEmail, 'LOGIN_HANDSHAKE', 'AUTH', { role: assignedRole }, 'SUCCESS');
         return responseSuccess({
           email: activeEmail,
           role: assignedRole,
+          nama: (userRecord && userRecord.nama) || 'User VAMOS',
           token: newToken
         });
 

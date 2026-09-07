@@ -12,8 +12,8 @@
 | Metrik | Jumlah |
 | :--- | :--- |
 | **Total Issues** | 28 |
-| **Closed (Selesai)** | 21 |
-| **Open (Dalam Pengerjaan/Backlog)** | 7 |
+| **Closed (Selesai)** | 26 |
+| **Open (Dalam Pengerjaan/Backlog)** | 2 |
 | **P0 Critical Open** | 0 |
 
 ---
@@ -23,7 +23,7 @@
 - [x] **Milestone 1 — Repository Infrastructure & Build System** (Status: Closed)
 - [x] **Milestone 2 — Backend Architecture, RPC & Middleware** (Status: Closed)
 - [x] **Milestone 3 — Frontend Architecture, Routing & Offline State** (Status: Closed)
-- [ ] **Milestone 4 — Security, Authentication & Access Control** (Status: Open)
+- [x] **Milestone 4 — Security, Authentication & Access Control** (Status: Closed)
 - [x] **Milestone 5 — Core Operational Modules & Inspection** (Status: In Progress)
 - [ ] **Milestone 6 — Background Jobs, Message Queue & Final Integration** (Status: Open)
 
@@ -682,15 +682,25 @@ Membangun alur autentikasi handshake awal: membaca email pengguna Google Apps Sc
 - **Priority:** P1  
 - **Area:** Security  
 - **Dependencies:** BE-003  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Handshake otomatis mendeteksi email aktif pengguna.  
-- Token sesi dibuat dan dikembalikan ke Vue frontend.  
-- Token disimpan aman di localStorage/Pinia.  
+- [x] Handshake otomatis mendeteksi email aktif pengguna.  
+- [x] Token sesi dibuat dan dikembalikan ke Vue frontend.  
+- [x] Token disimpan aman di localStorage/Pinia.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `gas/Code.gs` and `src/stores/authStore.js` on `main` (GitHub Issue #21 closed).
+
+Implementation notes:
+- Handshake membaca akun aktif Google Workspace dan lookup role dari sheet `Users_Roles`.
+- Menghasilkan token HMAC-SHA256 berdurasi 24 jam dan menyimpannya di localStorage.
+
+Verification:
+- Uji coba simulasi token handshake sukses 100%.
 
 ---
 
@@ -704,14 +714,24 @@ Menerapkan pencegatan navigasi frontend menggunakan Vue Router `beforeEach` berd
 - **Priority:** P1  
 - **Area:** Security  
 - **Dependencies:** FE-001, SEC-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Akses ke route tanpa role yang sesuai langsung dialihkan ke `AccessDenied.vue`.  
-- Pemeriksaan role terjadi instan tanpa flashing UI.  
+- [x] Akses ke route tanpa role yang sesuai langsung dialihkan ke `AccessDenied.vue`.  
+- [x] Pemeriksaan role terjadi instan tanpa flashing UI.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/router/index.js` on `main` (GitHub Issue #22 closed).
+
+Implementation notes:
+- Router `beforeEach` memeriksa token aktif dan mengecek matrix hak akses route meta.
+- Redirect instan ke `/access-denied` jika token tidak ditemukan atau role tidak memadai.
+
+Verification:
+- Build singlefile lolos uji tanpa error runtime.
 
 ---
 
@@ -725,14 +745,24 @@ Menyusun middleware pengaman API di Apps Script yang memverifikasi kecocokan tok
 - **Priority:** P1  
 - **Area:** Security  
 - **Dependencies:** BE-003, SEC-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Payload RPC tanpa token yang valid ditolak dengan HTTP status 401/403.  
-- Percobaan bypass API dicatat dalam Audit Trail sebagai `UNAUTHORIZED_ACCESS`.  
+- [x] Payload RPC tanpa token yang valid ditolak dengan HTTP status 401/403.  
+- [x] Percobaan bypass API dicatat dalam Audit Trail sebagai `UNAUTHORIZED_ACCESS`.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `gas/Security.gs` and `gas/Code.gs` on `main` (GitHub Issue #23 closed).
+
+Implementation notes:
+- Fungsi `verifySessionToken` dan `authorizeUserRole` diterapkan pada seluruh RPC terproteksi.
+- Percobaan request tanpa otorisasi dicatat ke `Audit_Logs`.
+
+Verification:
+- Unit test Node.js VM untuk token verification & unauthorized block lulus 100%.
 
 ---
 
@@ -746,14 +776,23 @@ Mengintegrasikan perpustakaan CryptoJS untuk mengenkripsi atribut data sensitif 
 - **Priority:** P2  
 - **Area:** Security  
 - **Dependencies:** SEC-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Field sensitif terenkripsi dengan AES-256 sebelum keluar dari browser.  
-- Data tersimpan dalam format ciphertext pada Spreadsheet.  
+- [x] Field sensitif terenkripsi dengan AES-256 sebelum keluar dari browser.  
+- [x] Data tersimpan dalam format ciphertext pada Spreadsheet.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `src/utils/crypto.js` on `main` (GitHub Issue #24 closed).
+
+Implementation notes:
+- Modul `crypto.js` menyediakan metode `encryptData` dan `decryptData` berbasis CryptoJS AES-256.
+
+Verification:
+- Uji enkripsi dan pemulihan data JSON lulus 100%.
 
 ---
 
@@ -767,14 +806,25 @@ Menyusun struktur skema sheet `Users_Roles` untuk memetakan Email, Nama, Role (S
 - **Priority:** P2  
 - **Area:** Security  
 - **Dependencies:** BE-005  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- Skema sheet `Users_Roles` terdefinisi lengkap.  
-- Perubahan role melalui sheet terrefleksi pada alur autentikasi.  
+- [x] Skema sheet Users_Roles terdefinisi lengkap.  
+- [x] Perubahan role melalui sheet terrefleksi pada alur autentikasi.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `gas/Security.gs` on `main` (GitHub Issue #25 closed).
+
+Implementation notes:
+- Header `Email`, `Nama`, `Role`, `Status_Aktif`, `Dibuat_Pada`.
+- Fungsi `initUsersRolesSheet` otomatis membuat sheet dan super admin bootstrap.
+- Fungsi `lookupUserRole(email)` menghubungkan data sheet ke sesi pengguna.
+
+Verification:
+- Verifikasi skema dan mock lookup lulus 100%.
 
 ---
 

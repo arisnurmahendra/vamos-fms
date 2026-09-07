@@ -50,6 +50,13 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async checkAuth() {
+      if (this.token && this.user) {
+        return this.user;
+      }
+      return await this.performHandshake();
+    },
+
     logout() {
       this.user = null;
       this.token = null;

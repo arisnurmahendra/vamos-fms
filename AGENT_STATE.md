@@ -25,7 +25,7 @@
 | 1    | Infrastruktur Repositori & Build System | ✅ Selesai     | 100%     |
 | 2    | Arsitektur Backend & Middleware         | ✅ Selesai     | 100%     |
 | 3    | Arsitektur Frontend & State             | ✅ Selesai     | 100%     |
-| 4    | Strategi Autentikasi                    | ⬜ Belum mulai | 0%       |
+| 4    | Strategi Autentikasi                    | ✅ Selesai     | 100%     |
 | 5    | Background Jobs & Integrasi Final       | ⬜ Belum mulai | 0%       |
 
 ---
@@ -40,12 +40,12 @@
 | `main.js`         | ✅ Ada       | Entry point Vue dengan Pinia & Vue Router        |
 | `App.vue`         | ✅ Ada       | Root layout: Header, status badge & RouterView   |
 | `style.css`       | ✅ Ada       | Global styles & variables                        |
-| `router/index.js` | ✅ Ada       | 4 route modul + AccessDenied + redirect          |
+| `router/index.js` | ✅ Ada       | Route navigation guard (beforeEach) + 4 modul + AccessDenied |
 | `views/`          | ✅ Ada       | BookingView, MaintenanceView, P2HView, VTACSView, AccessDenied |
 | `components/`     | ✅ Ada       | SkeletonLoader.vue (card, table, line)           |
 | `stores/`         | ✅ Ada       | Pinia stores (auth, booking, maintenance, p2h, vtacs) |
 | `services/`       | ✅ Ada       | apiService.js (dual-mode RPC), storageService.js |
-| `utils/`          | ✅ Ada       | logger.js (smart console logger)                 |
+| `utils/`          | ✅ Ada       | logger.js (smart logger), crypto.js (AES-256)    |
 
 ### Backend (`/gas`)
 

@@ -61,25 +61,25 @@ var PUBLIC_ACTIONS = {
  */
 var ACTION_ROLE_MAP = {
   // Booking Module
-  'booking.submit': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER'],
-  'booking.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER'],
+  'booking.submit': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER', 'DRIVER'],
+  'booking.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2', 'USER', 'DRIVER'],
   'booking.approval.process': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'GS2', 'ADM1', 'ADM2'],
   'booking.nopol.manage': ['SUPER_ADMIN', 'ADMIN'],
   
   // Maintenance Module
-  'maintenance.report.submit': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'USER'],
-  'maintenance.report.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'VENDOR_BENGKEL'],
+  'maintenance.report.submit': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'USER', 'DRIVER', 'MECHANIC'],
+  'maintenance.report.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1', 'VENDOR_BENGKEL', 'MECHANIC'],
   'maintenance.spk.create': ['SUPER_ADMIN', 'ADMIN'],
   'maintenance.rab.manage': ['SUPER_ADMIN', 'ADMIN'],
   
   // P2H Module
-  'p2h.kendaraan.submit': ['SUPER_ADMIN', 'ADMIN', 'USER', 'GS1'],
-  'p2h.kendaraan.list': ['SUPER_ADMIN', 'ADMIN', 'GS1', 'AM'],
+  'p2h.kendaraan.submit': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS1'],
+  'p2h.kendaraan.list': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS1', 'AM'],
   
   // V-TACS Module
-  'vtacs.voucher.request': ['SUPER_ADMIN', 'ADMIN', 'USER'],
-  'vtacs.voucher.report': ['SUPER_ADMIN', 'ADMIN', 'USER', 'VENDOR_POM'],
-  'vtacs.reconcile': ['SUPER_ADMIN', 'ADMIN']
+  'vtacs.voucher.request': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS_ADMIN'],
+  'vtacs.voucher.report': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'VENDOR_POM', 'GS_ADMIN'],
+  'vtacs.reconcile': ['SUPER_ADMIN', 'ADMIN', 'GS_ADMIN']
 };
 
 /**
@@ -179,3 +179,79 @@ function authorizeUserRole(action, userRole) {
 
   return allowedRoles.indexOf(userRole) !== -1;
 }
+
+/**
+ * [SEC-005] Users_Roles Sheet & Schema Specification
+ * Struktur skema: Email, Nama, Role, Status_Aktif, Dibuat_Pada
+ */
+var USERS_ROLES_SHEET_NAME = 'Users_Roles';
+var USERS_ROLES_HEADERS = ['Email', 'Nama', 'Role', 'Status_Aktif', 'Dibuat_Pada'];
+
+/**
+ * [SEC-005] Inisialisasi Sheet Users_Roles jika belum ada pada Master Spreadsheet
+ * @returns {GoogleAppsScript.Spreadsheet.Sheet}
+ */
+function initUsersRolesSheet() {
+  var ss = DatabaseRouter.openSpreadsheet('MASTER');
+  var sheet = ss.getSheetByName(USERS_ROLES_SHEET_NAME);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(USERS_ROLES_SHEET_NAME);
+    sheet.appendRow(USERS_ROLES_HEADERS);
+    sheet.getRange(1, 1, 1, USERS_ROLES_HEADERS.length)
+      .setFontWeight('bold')
+      .setBackground('#0f172a')
+      .setFontColor('#ffffff');
+    sheet.setFrozenRows(1);
+
+    // Tambahkan default super admin bootstrap bila baru dibuat
+    sheet.appendRow([
+      Session.getActiveUser().getEmail() || 'admin@vamos.com',
+      'System Administrator',
+      'SUPER_ADMIN',
+      'AKTIF',
+      new Date().toISOString()
+    ]);
+  }
+
+  return sheet;
+}
+
+/**
+ * [SEC-005] Cari role pengguna dari sheet Users_Roles
+ * @param {string} email
+ * @returns {{ role: string, nama: string, status: string }|null}
+ */
+function lookupUserRole(email) {
+  if (!email) return null;
+
+  try {
+    var ss = DatabaseRouter.openSpreadsheet('MASTER');
+    var sheet = ss.getSheetByName(USERS_ROLES_SHEET_NAME);
+    if (!sheet) {
+      sheet = initUsersRolesSheet();
+    }
+
+    var data = sheet.getDataRange().getValues();
+    if (data.length <= 1) return null;
+
+    var targetEmail = String(email).trim().toLowerCase();
+    for (var i = 1; i < data.length; i++) {
+      var rowEmail = String(data[i][0]).trim().toLowerCase();
+      if (rowEmail === targetEmail) {
+        return {
+          email: data[i][0],
+          nama: data[i][1],
+          role: String(data[i][2]).trim().toUpperCase(),
+          status: String(data[i][3]).trim().toUpperCase()
+        };
+      }
+    }
+
+    return null;
+  } catch (err) {
+    console.warn('[USERS_ROLES]: Lookup error: ' + err.message);
+    return null;
+  }
+}
+
