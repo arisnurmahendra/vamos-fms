@@ -12,8 +12,8 @@
 | Metrik | Jumlah |
 | :--- | :--- |
 | **Total Issues** | 28 |
-| **Closed (Selesai)** | 27 |
-| **Open (Dalam Pengerjaan/Backlog)** | 1 |
+| **Closed (Selesai)** | 28 |
+| **Open (Dalam Pengerjaan/Backlog)** | 0 |
 | **P0 Critical Open** | 0 |
 
 ---
@@ -24,8 +24,8 @@
 - [x] **Milestone 2 — Backend Architecture, RPC & Middleware** (Status: Closed)
 - [x] **Milestone 3 — Frontend Architecture, Routing & Offline State** (Status: Closed)
 - [x] **Milestone 4 — Security, Authentication & Access Control** (Status: Closed)
-- [x] **Milestone 5 — Core Operational Modules & Inspection** (Status: In Progress)
-- [ ] **Milestone 6 — Background Jobs, Message Queue & Final Integration** (Status: Open)
+- [x] **Milestone 5 — Core Operational Modules & Inspection** (Status: Closed)
+- [x] **Milestone 6 — Background Jobs, Message Queue & Final Integration** (Status: Closed)
 
 ---
 
@@ -980,7 +980,7 @@ Membuat antrean pengiriman pesan WhatsApp pada sheet `WA_Outbox` untuk memproses
 - **Priority:** P2  
 - **Area:** Background Jobs  
 - **Dependencies:** BE-005  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Sheet `WA_Outbox` memiliki kolom Status (PENDING, SENT, FAILED), Recipient, Message, dan Retry_Count.  
@@ -988,6 +988,9 @@ Membuat antrean pengiriman pesan WhatsApp pada sheet `WA_Outbox` untuk memproses
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Diimplementasikan pada `gas/Jobs.gs` (`initWAOutboxSheet()`, `enqueueWAMessage()`, `handleJobsOutboxList()`). Pesan dicatat dengan ID unik `MSG-YYYYMMDD-XXXX` dan status PENDING.
 
 ---
 
@@ -1001,7 +1004,7 @@ Mengonfigurasi time-driven trigger Apps Script (interval 1 menit) untuk mengirim
 - **Priority:** P2  
 - **Area:** Background Jobs  
 - **Dependencies:** JOB-001  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Trigger mengeksekusi fungsi batch processor setiap 1 menit.  
@@ -1010,6 +1013,9 @@ Mengonfigurasi time-driven trigger Apps Script (interval 1 menit) untuk mengirim
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Diimplementasikan pada `gas/Jobs.gs` (`processWAOutboxQueue()`, `setupTimeDrivenTriggers()`, `handleJobsProcessQueue()`, `handleJobsTriggerSetup()`). Mendukung gateway Fonnte via UrlFetchApp dan simulation mode, dengan batas retry maksimal 3 kali sebelum berstatus FAILED.
 
 ---
 
@@ -1023,7 +1029,7 @@ Mengintegrasikan komponen notifikasi Toast/Snackbar di frontend untuk memberikan
 - **Priority:** P2  
 - **Area:** Frontend  
 - **Dependencies:** FE-002  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Toast muncul otomatis saat transaksi sukses atau terjadi error.  
@@ -1031,6 +1037,9 @@ Mengintegrasikan komponen notifikasi Toast/Snackbar di frontend untuk memberikan
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Diimplementasikan pada `src/services/notificationService.js` dan `src/components/ToastNotification.vue`, terpasang secara global pada `src/App.vue` dan diintegrasikan otomatis pada error handler `src/services/apiService.js`.
 
 ---
 
@@ -1044,7 +1053,7 @@ Mendeteksi status koneksi internet browser (`navigator.onLine`) dan menampilkan 
 - **Priority:** P2  
 - **Area:** Frontend  
 - **Dependencies:** FE-006  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Banner peringatan offline muncul saat koneksi terputus.  
@@ -1052,6 +1061,9 @@ Mendeteksi status koneksi internet browser (`navigator.onLine`) dan menampilkan 
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Diimplementasikan pada `src/App.vue` dengan event listener `window.addEventListener('online'/'offline')`, banner interaktif di bagian atas antarmuka, pemantauan jumlah antrean IndexedDB (`storageService.getQueueCount()`), dan auto-sync saat koneksi internet pulih.
 
 ---
 
@@ -1065,7 +1077,7 @@ Melakukan pengujian menyeluruh terhadap seluruh modul operasional, skenario erro
 - **Priority:** P3  
 - **Area:** QA & Testing  
 - **Dependencies:** MOD-001, MOD-002, MOD-003, MOD-004, BE-010  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
 - Seluruh skenario pengujian E2E lulus tanpa error unhandled.  
@@ -1073,6 +1085,9 @@ Melakukan pengujian menyeluruh terhadap seluruh modul operasional, skenario erro
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Diverifikasi melalui test suite `scratch/test_e2e_resilience.cjs`. 6 skenario pengujian (Queue Enqueue, Batch Processor Retry/Sent, Trigger Registration, Anti-Formula Injection Sanitizer, RBAC Authorization Guard, dan Global Failsafe HTTP 401/404) lulus 100%. Build produksi `npm run build:prod` berhasil dikompilasi ke singlefile bundle `deploy/index.html`.
 
 ---
 

@@ -6,6 +6,7 @@
 
 import logger from '../utils/logger.js';
 import storageService from './storageService.js';
+import notificationService from './notificationService.js';
 
 // Mock Data lokal untuk mode DEMO (Strict Isolated)
 const MOCK_DB = {
@@ -515,6 +516,36 @@ export const apiService = {
         };
       }
 
+      if (action === 'jobs.outbox.list') {
+        return {
+          status: 'success',
+          code: 200,
+          data: [
+            { queue_id: 'MSG-20260908-101', module: 'BOOKING', recipient: '6281234567890', message: 'Permintaan booking armada menunggu approval', status: 'SENT', retry_count: 0, created_at: new Date().toISOString() },
+            { queue_id: 'MSG-20260908-102', module: 'MAINTENANCE', recipient: '6289876543210', message: 'SPK SPK-20260908-11 telah diterbitkan', status: 'PENDING', retry_count: 0, created_at: new Date().toISOString() }
+          ]
+        };
+      }
+
+      if (action === 'jobs.outbox.process') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Batch processing selesai (Demo Mock): 2 pesan diproses.',
+          data: {
+            stats: { processed: 2, sent: 2, failed: 0, pending: 0 }
+          }
+        };
+      }
+
+      if (action === 'jobs.trigger.setup') {
+        return {
+          status: 'success',
+          code: 200,
+          message: 'Time-driven trigger per 1 menit terverifikasi aktif (Demo Mock).'
+        };
+      }
+
       if (MOCK_DB[action]) {
         return {
           status: 'success',
@@ -554,6 +585,7 @@ export const apiService = {
           data: { offlineQueued: true }
         };
       }
+      notificationService.error(err.message || 'Terjadi gangguan komunikasi dengan server.', 'Gagal Memproses Aksi');
       throw err;
     }
   }

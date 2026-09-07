@@ -19,9 +19,11 @@ function sanitizeInput(data) {
   }
 
   if (typeof data === 'string') {
+    if (data.length > 0 && FORMULA_INJECTION_PREFIXES.indexOf(data.charAt(0)) !== -1) {
+      return "'" + data;
+    }
     var trimmed = data.trim();
     if (trimmed.length > 0 && FORMULA_INJECTION_PREFIXES.indexOf(trimmed.charAt(0)) !== -1) {
-      // Netralkan formula injection dengan prefix tanda petik tunggal (')
       return "'" + data;
     }
     return data;
@@ -114,7 +116,12 @@ var ACTION_ROLE_MAP = {
   'vtacs.voucher.request': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'GS_ADMIN'],
   'vtacs.voucher.redeem': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'VENDOR_POM', 'GS_ADMIN'],
   'vtacs.voucher.report': ['SUPER_ADMIN', 'ADMIN', 'USER', 'DRIVER', 'VENDOR_POM', 'GS_ADMIN'],
-  'vtacs.reconcile': ['SUPER_ADMIN', 'ADMIN', 'GS_ADMIN']
+  'vtacs.reconcile': ['SUPER_ADMIN', 'ADMIN', 'GS_ADMIN'],
+
+  // Background Jobs Module
+  'jobs.outbox.list': ['SUPER_ADMIN', 'ADMIN', 'AM', 'GS1'],
+  'jobs.outbox.process': ['SUPER_ADMIN', 'ADMIN'],
+  'jobs.trigger.setup': ['SUPER_ADMIN', 'ADMIN']
 };
 
 /**

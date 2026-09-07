@@ -1,5 +1,23 @@
 <template>
   <div class="app-layout">
+    <!-- [JOB-004] Offline Network State Alert Banner -->
+    <div v-if="isOffline" class="offline-banner" role="alert">
+      <div class="offline-content">
+        <span class="offline-icon">⚠️</span>
+        <div class="offline-text">
+          <strong>Mode Offline Aktif:</strong> Koneksi internet terputus. Data formulir dan transaksi Anda akan disimpan otomatis ke IndexedDB lokal dan disinkronkan saat koneksi pulih kembali.
+        </div>
+      </div>
+      <div class="offline-actions">
+        <span v-if="pendingOfflineCount > 0" class="offline-counter">
+          {{ pendingOfflineCount }} Menunggu Sinkron
+        </span>
+        <button class="btn btn-xs btn-sync-offline" @click="checkSync">
+          🔄 Cek & Sinkron
+        </button>
+      </div>
+    </div>
+
     <header class="app-header">
       <div class="brand">
         <span class="logo-icon">🚗</span>
@@ -21,12 +39,18 @@
     <main class="main-content">
       <router-view />
     </main>
+
+    <!-- [JOB-003] Global Toast & Snackbar Notification Component -->
+    <ToastNotification />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from './stores/authStore.js'
+import ToastNotification from './components/ToastNotification.vue'
+import notificationService from './services/notificationService.js'
+import storageService from './services/storageService.js'
 
 const authStore = useAuthStore()
 
@@ -34,8 +58,64 @@ const appMode = computed(() => {
   return import.meta.env.VITE_APP_MODE || 'development'
 })
 
+// [JOB-004] Network State Detection
+const isOffline = ref(!navigator.onLine)
+const pendingOfflineCount = ref(0)
+
+const updateOnlineStatus = async () => {
+  const wasOffline = isOffline.value
+  isOffline.value = !navigator.onLine
+
+  if (wasOffline && !isOffline.value) {
+    notificationService.success('Koneksi internet pulih kembali! Memulai sinkronisasi antrean otomatis...', 'Jaringan Pulih')
+    await syncPendingQueue()
+  } else if (isOffline.value) {
+    notificationService.warning('Perangkat beralih ke mode offline. Penyimpanan transaksi dialihkan ke IndexedDB lokal.', 'Mode Offline Aktif')
+    await refreshPendingCount()
+  }
+}
+
+const refreshPendingCount = async () => {
+  try {
+    const tasks = await storageService.getPendingOfflineTasks()
+    pendingOfflineCount.value = tasks ? tasks.length : 0
+  } catch (e) {
+    pendingOfflineCount.value = 0
+  }
+}
+
+const syncPendingQueue = async () => {
+  try {
+    await refreshPendingCount()
+    if (pendingOfflineCount.value > 0) {
+      await storageService.syncOfflineQueue()
+      notificationService.success(`Berhasil menyinkronkan transaksi offline ke server.`, 'Sinkronisasi Selesai')
+      await refreshPendingCount()
+    }
+  } catch (err) {
+    notificationService.error(`Gagal sinkronisasi antrean: ${err.message}`, 'Sinkronisasi Gagal')
+  }
+}
+
+const checkSync = async () => {
+  await updateOnlineStatus()
+  if (!isOffline.value) {
+    await syncPendingQueue()
+  } else {
+    notificationService.warning('Jaringan internet masih belum tersedia. Data tersimpan aman di lokal.', 'Offline')
+  }
+}
+
 onMounted(async () => {
+  window.addEventListener('online', updateOnlineStatus)
+  window.addEventListener('offline', updateOnlineStatus)
   await authStore.performHandshake()
+  await refreshPendingCount()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('online', updateOnlineStatus)
+  window.removeEventListener('offline', updateOnlineStatus)
 })
 </script>
 
@@ -53,6 +133,60 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
+/* Offline Banner (JOB-004) */
+.offline-banner {
+  background: #fffbeb;
+  border-bottom: 2px solid #f59e0b;
+  color: #92400e;
+  padding: 0.65rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+  z-index: 60;
+}
+.offline-content {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.offline-icon {
+  font-size: 1.2rem;
+}
+.offline-text {
+  line-height: 1.35;
+}
+.offline-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+.offline-counter {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.btn-sync-offline {
+  background: #f59e0b;
+  color: #ffffff;
+  border: none;
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.btn-sync-offline:hover {
+  background: #d97706;
+}
+
 .app-header {
   display: flex;
   align-items: center;

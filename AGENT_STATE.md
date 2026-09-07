@@ -1,6 +1,6 @@
 # 📊 AGENT STATE — VAMOS FMS
 
-> **Terakhir diperbarui:** 2026-09-08 00:25 WIB
+> **Terakhir diperbarui:** 2026-09-08 00:55 WIB
 >
 > File ini merekam **status terkini** proyek. Agent WAJIB membaca file ini sebelum mulai bekerja dan WAJIB memperbaruinya setelah menyelesaikan task.
 > Aturan ketika menjalankan promt dari user:
@@ -30,7 +30,7 @@
 | 6    | Modul V-TACS (Issues #93 - #100)        | ✅ Selesai     | 100%     |
 | 7    | Modul Booking Kendaraan (Issues #36 - #58)| ✅ Selesai   | 100%     |
 | 8    | Modul Maintenance (Issues #59 - #84)    | ✅ Selesai     | 100%     |
-| 9    | Background Jobs & Integrasi Final       | ⬜ Belum mulai | 0%       |
+| 9    | Background Jobs & Integrasi Final (Issues #31 - #35) | ✅ Selesai | 100%     |
 
 ---
 
@@ -42,13 +42,13 @@
 | ----------------- | ------------ | ------------------------------------------------ |
 | `index.html`      | ✅ Ada       | HTML template utama (lang="id")                  |
 | `main.js`         | ✅ Ada       | Entry point Vue dengan Pinia & Vue Router        |
-| `App.vue`         | ✅ Ada       | Root layout: Header, status badge & RouterView   |
+| `App.vue`         | ✅ Ada       | Root layout: Header, offline banner & Toast host |
 | `style.css`       | ✅ Ada       | Global styles & variables                        |
 | `router/index.js` | ✅ Ada       | Route navigation guard (beforeEach) + 4 modul + AccessDenied |
 | `views/`          | ✅ Ada       | BookingView (Full), MaintenanceView (Full), P2HView (Full), VTACSView (Full), AccessDenied |
-| `components/`     | ✅ Ada       | SkeletonLoader.vue (card, table, line)           |
+| `components/`     | ✅ Ada       | SkeletonLoader.vue, ToastNotification.vue        |
 | `stores/`         | ✅ Ada       | Pinia stores (auth, booking, maintenance, p2h, vtacs) |
-| `services/`       | ✅ Ada       | apiService.js (dual-mode RPC), storageService.js |
+| `services/`       | ✅ Ada       | apiService.js, storageService.js, notificationService.js |
 | `utils/`          | ✅ Ada       | logger.js (smart logger), crypto.js (AES-256)    |
 
 ### Backend (`/gas`)
@@ -59,6 +59,7 @@
 | `Security.gs`     | ✅ Ada       | verifySessionToken + RBAC + sanitizeInput             |
 | `Database.gs`     | ✅ Ada       | DatabaseRouter multi-spreadsheet DAL                  |
 | `Audit.gs`        | ✅ Ada       | recordAuditLog append-only with silent failsafe       |
+| `Jobs.gs`         | ✅ Ada       | WA_Outbox queue, batch processor, & 1-min triggers    |
 | `P2H.gs`          | ✅ Ada       | Schema P2H_Laporan (15 kolom), submit, reports.list & supervisor.followup |
 | `VTACS.gs`        | ✅ Ada       | Schema VTACS Sheets, anti-conflict lock, voucher request/redeem & reconcile |
 | `Booking.gs`      | ✅ Ada       | Schema datadb, state machine approval, HMAC WA token & CRUD |

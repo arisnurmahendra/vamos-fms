@@ -205,6 +205,16 @@ function apiDispatcher(payload) {
       case 'maintenance.users.toggle':
         return handleMaintenanceUserToggle(sanitizedData, actor);
 
+      // Background Jobs & Message Queue Endpoints
+      case 'jobs.outbox.list':
+        return handleJobsOutboxList();
+
+      case 'jobs.outbox.process':
+        return handleJobsProcessQueue(actor);
+
+      case 'jobs.trigger.setup':
+        return handleJobsTriggerSetup(actor);
+
       default:
         return responseError(404, "Action not found: " + action);
     }
