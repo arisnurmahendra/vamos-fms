@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P2H_DEVELOPMENT Issue Tracker",
+  "project": "VAMOS FMS - P2HView",
+  "version": "1.0.0",
+  "last_updated": "2026-09-07T21:55:00+07:00",
+  "milestones": [
+    {
+      "id": "P2H-PHASE-1",
+      "title": "Fase 1 — Backend & Database Schema (GAS)",
+      "description": "Menyiapkan penyimpanan data dan RPC API.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "P2H-001",
+          "title": "Pembuatan Schema Sheet Master & Laporan P2H",
+          "objective": "Membuat Google Sheets untuk P2H_Laporan dan P2H_Kendaraan.",
+          "metadata": { "priority": "P1", "area": "Backend Data", "dependencies": [] },
+          "acceptance_criteria": ["Header kolom disiapkan", "Integrasi master data"],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "P2H-002",
+          "title": "Pembuatan RPC Actions p2h.kendaraan.submit",
+          "objective": "Membuat endpoint backend modeKendaraan.",
+          "metadata": { "priority": "P1", "area": "Backend API", "dependencies": ["P2H-001"] },
+          "acceptance_criteria": ["Menerima JSON payload", "Validasi server-side", "Return UID"],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "P2H-PHASE-2",
+      "title": "Fase 2 — Frontend Foundation & State Management",
+      "description": "Manajemen state offline-first dan caching.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "P2H-003",
+          "title": "Setup Pinia Store & LocalStorage Caching",
+          "objective": "Buat useP2HStore.js dan caching kendaraan terakhir.",
+          "metadata": { "priority": "P1", "area": "Frontend", "dependencies": [] },
+          "acceptance_criteria": ["Cache profil kendaraan di localStorage", "Cache master dropdown"],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "P2H-004",
+          "title": "Mekanisme Sinkronisasi IndexedDB",
+          "objective": "Menyimpan antrian offline di IndexedDB.",
+          "metadata": { "priority": "P1", "area": "Frontend", "dependencies": ["P2H-003"] },
+          "acceptance_criteria": ["Simpan payload jika offline", "Background worker sync"],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "P2H-PHASE-3",
+      "title": "Fase 3 — UI Checklist Form & Validasi",
+      "description": "Antarmuka aplikasi checklist P2H.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "P2H-005",
+          "title": "Pengembangan Komponen P2H Form",
+          "objective": "Buat P2HFormView.vue untuk 5 kategori observasi.",
+          "metadata": { "priority": "P1", "area": "UI/UX", "dependencies": ["P2H-002", "P2H-004"] },
+          "acceptance_criteria": ["UI Mobile-Responsive", "Fitur Reset"],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "P2H-006",
+          "title": "Validasi Frontend & Throttling",
+          "objective": "Mencegah data kosong dan double-click.",
+          "metadata": { "priority": "P2", "area": "UI/UX", "dependencies": ["P2H-005"] },
+          "acceptance_criteria": ["Validasi client-side", "Throttling tombol submit", "SweetAlert2 feedback"],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "P2H-PHASE-4",
+      "title": "Fase 4 — Dasbor Validasi & Pemantauan",
+      "description": "Fitur RBAC untuk GA dan Supervisor.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "P2H-007",
+          "title": "Dasbor General Affairs (GA) P2H",
+          "objective": "Pemantauan metrik keselamatan.",
+          "metadata": { "priority": "P2", "area": "Frontend", "dependencies": ["P2H-005"] },
+          "acceptance_criteria": ["Grafik kendaraan layak vs tidak layak"],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "P2H-008",
+          "title": "Antarmuka Validasi Supervisor",
+          "objective": "UI khusus Supervisor untuk temuan NOK.",
+          "metadata": { "priority": "P2", "area": "Frontend", "dependencies": ["P2H-007"] },
+          "acceptance_criteria": ["List kendaraan NOK", "Aksi update status perbaikan"],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    }
+  ]
+}
