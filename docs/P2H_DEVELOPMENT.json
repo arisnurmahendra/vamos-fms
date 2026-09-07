@@ -9,7 +9,7 @@
       "id": "P2H-PHASE-1",
       "title": "Fase 1 — Backend & Database Schema (GAS)",
       "description": "Menyiapkan penyimpanan data dan RPC API.",
-      "status": "Open",
+      "status": "Closed",
       "issues": [
         {
           "tracker_id": "P2H-001",
@@ -18,7 +18,17 @@
           "metadata": { "priority": "P1", "area": "Backend Data", "dependencies": [] },
           "acceptance_criteria": ["Header kolom disiapkan", "Integrasi master data"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Skema P2H_Laporan (15 kolom standar) dan P2H_Kendaraan diimplementasikan di gas/P2H.gs."
+            ],
+            "verification": [
+              "Unit test validasi skema lulus 100%."
+            ]
+          }
         },
         {
           "tracker_id": "P2H-002",
@@ -27,7 +37,17 @@
           "metadata": { "priority": "P1", "area": "Backend API", "dependencies": ["P2H-001"] },
           "acceptance_criteria": ["Menerima JSON payload", "Validasi server-side", "Return UID"],
           "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
-          "status": "Open"
+          "status": "Closed",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Endpoint p2h.kendaraan.submit dan p2h.master.get dibuat dengan validasi server-side, evaluasi 35 item checklist, dan atomic lock UID."
+            ],
+            "verification": [
+              "Unit test node scratch/test_p2h_backend.cjs lulus 100%."
+            ]
+          }
         }
       ]
     },

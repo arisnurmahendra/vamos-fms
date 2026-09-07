@@ -81,6 +81,13 @@ function apiDispatcher(payload) {
           timezone: "Asia/Jakarta"
         });
 
+      // P2H Module RPC Endpoints
+      case 'p2h.master.get':
+        return handleP2HMasterGet();
+
+      case 'p2h.kendaraan.submit':
+        return handleP2HKendaraanSubmit(sanitizedData, actor);
+
       default:
         return responseError(404, "Action not found: " + action);
     }

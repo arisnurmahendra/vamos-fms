@@ -7,24 +7,32 @@ Dokumen ini memecah spesifikasi PRD `old_apps/P2HView/PRODUCT_REQUIREMENTS.md` m
 
 ---
 
-## 🚩 Fase 1 — Backend & Database Schema (GAS)
+## 🚩 Fase 1 — Backend & Database Schema (GAS) (Status: Closed)
 
 Fokus utama adalah menyiapkan tempat penyimpanan data dan jalur komunikasi API/RPC dari Vue ke Google Apps Script.
 
 ### [P2H-001] Pembuatan Schema Sheet Master & Laporan P2H
 - **Objective:** Membuat Google Sheets (atau tab baru di DB VAMOS) untuk `P2H_Laporan` dan `P2H_Kendaraan`.
-- **Priority:** P1 | **Area:** Backend Data
+- **Priority:** P1 | **Area:** Backend Data | **Status:** Closed
 - **Acceptance Criteria:**
-  - Header kolom P2H disiapkan (Observator, Tanggal, Nopol, 5 Area Observasi, dsb).
-  - Integrasi dengan master data VAMOS (Subkon, Kendaraan).
+  - [x] Header kolom P2H disiapkan (Observator, Tanggal, Nopol, 5 Area Observasi, dsb).
+  - [x] Integrasi dengan master data VAMOS (Subkon, Kendaraan).
+- **Notes:**
+  - Implemented in `gas/P2H.gs` (GitHub Issue #85 closed).
+  - Skema tabel `P2H_Laporan` (15 kolom standar) dan `P2H_Kendaraan` diinisialisasi otomatis via `initP2HSheets()`.
+  - Verifikasi: Unit test lulus 100%.
 
 ### [P2H-002] Pembuatan RPC Actions `p2h.kendaraan.submit`
 - **Objective:** Membuat _endpoint_ backend `modeKendaraan` untuk menerima data payload.
-- **Priority:** P1 | **Area:** Backend API
+- **Priority:** P1 | **Area:** Backend API | **Status:** Closed
 - **Acceptance Criteria:**
-  - Menerima JSON *payload* form P2H.
-  - Melakukan validasi *server-side* (ID Kendaraan tidak kosong, dsb).
-  - Mengembalikan UID laporan yang berhasil disimpan.
+  - [x] Menerima JSON *payload* form P2H.
+  - [x] Melakukan validasi *server-side* (ID Kendaraan tidak kosong, dsb).
+  - [x] Mengembalikan UID laporan yang berhasil disimpan.
+- **Notes:**
+  - Implemented in `gas/P2H.gs` dan `gas/Code.gs` (GitHub Issue #86 closed).
+  - Validasi server-side, evaluasi otomatis 35 item checklist (`FIT` / `UNFIT`), atomic lock UID generation (`P2H-YYYYMMDD-XXXX`), dan pencatatan audit log mutasi.
+  - Verifikasi: Unit test sandbox lulus 100%.
 
 ---
 

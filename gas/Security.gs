@@ -52,7 +52,8 @@ function sanitizeInput(data) {
 var PUBLIC_ACTIONS = {
   'ping': true,
   'auth.handshake': true,
-  'system.info': true
+  'system.info': true,
+  'p2h.master.get': true
 };
 
 /**
