@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Booking Module Refactor Issue Tracker",
+  "project": "VAMOS FMS - Booking Module Refactor",
+  "version": "1.0.0",
+  "last_updated": "2026-09-07T22:30:00+07:00",
+  "milestones": [
+    {
+      "id": "BKG-PHASE-1",
+      "title": "Fase 1 — Data Layer & Schema Canonicalization",
+      "description": "Canonicalize schema and remediate sensitive tokens.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "BKG-001",
+          "title": "Audit & Canonicalize COL Schema Contract",
+          "objective": "Verifikasi dan dokumentasikan ulang seluruh mapping kolom COL di Code.js ke skema canonical ground truth VAMOS FMS.",
+          "metadata": { "priority": "P0", "area": "Booking / Data", "dependencies": [] },
+          "acceptance_criteria": [
+            "Semua kolom datadb!J:AK terdokumentasi lengkap dalam docs/BOOKING_SCHEMA.md",
+            "Seluruh magic number raw column index diidentifikasi sebagai technical debt"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-002",
+          "title": "Design Booking Pinia Store Schema",
+          "objective": "Rancang skema state VAMOS FMS untuk modul Booking menggunakan Pinia.",
+          "metadata": { "priority": "P1", "area": "Booking / Frontend", "dependencies": ["BKG-001"] },
+          "acceptance_criteria": [
+            "useBookingStore.js dibuat di src/stores/ dengan state lengkap",
+            "Tipe setiap field didefinisikan dengan JSDoc comment",
+            "Store bersih dari GAS-specific code"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-003",
+          "title": "Migrate WA Token ke Script Properties",
+          "objective": "Pindahkan fonnteWA hardcoded token ke PropertiesService.getScriptProperties().",
+          "metadata": { "priority": "P0", "area": "Booking / Security", "dependencies": [] },
+          "acceptance_criteria": [
+            "Token tidak ada di source code manapun",
+            "FronteWA.js membaca token via FONNTE_TOKEN di Script Properties",
+            "Dokumentasi cara set Script Property ditambahkan di docs/OPERATIONS.md"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "BKG-PHASE-2",
+      "title": "Fase 2 — Authentication & Access Control Refactor",
+      "description": "Ganti sistem email whitelist dengan token sesi GAS terintegrasi VAMOS FMS.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "BKG-004",
+          "title": "Replace Email-Whitelist Auth dengan VAMOS Auth Token",
+          "objective": "Ganti doGet() lama yang membaca datadb!AU:AV dengan autentikasi handshake VAMOS FMS.",
+          "metadata": { "priority": "P1", "area": "Booking / Auth", "dependencies": ["BKG-001", "SEC-001"] },
+          "acceptance_criteria": [
+            "Modul Booking di VAMOS FMS menggunakan authStore terpusat",
+            "Role yang diizinkan: SM, GS1, GS2, ADM1, ADM2, User",
+            "Akses tanpa role valid dialihkan ke AccessDenied.vue"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-005",
+          "title": "Implement WA Approval Token via SHA-256 (Port ke VAMOS)",
+          "objective": "Port generateApprovalToken dan verifyApprovalToken ke modul GAS VAMOS FMS.",
+          "metadata": { "priority": "P1", "area": "Booking / Auth", "dependencies": ["BKG-003", "BKG-004"] },
+          "acceptance_criteria": [
+            "generateApprovalToken dan verifyApprovalToken diport ke booking.gs",
+            "Secret WA_APPROVAL_SECRET tersimpan di Script Properties",
+            "Link approval WA tetap berfungsi dari luar"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "BKG-PHASE-3",
+      "title": "Fase 3 — Core Booking API (GAS Backend Refactor)",
+      "description": "Ekstrak logika bisnis dari Code.js monolith menjadi RPC actions.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "BKG-006",
+          "title": "Extract & Port Buat_Permintaan_User sebagai RPC Action",
+          "objective": "Ekstrak Buat_Permintaan_User ke action booking.submit di VAMOS API dispatcher.",
+          "metadata": { "priority": "P1", "area": "Booking / Backend", "dependencies": ["BKG-001", "BKG-004", "BE-001"] },
+          "acceptance_criteria": [
+            "Action booking.submit menerima payload standar",
+            "Mendukung kode respons OK, EMPTY_FIELD, USER_NOT_FOUND, NOPOL_BUSY, DUPLICATE, dll.",
+            "Atomic UID generation dengan LockService",
+            "Semua magic number diganti dengan konstanta COL.*"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-007",
+          "title": "Refactor Nopol CRUD sebagai RPC Actions",
+          "objective": "Port pengelolaan Nopol ke actions booking.nopol.*.",
+          "metadata": { "priority": "P2", "area": "Booking / Backend", "dependencies": ["BKG-006"] },
+          "acceptance_criteria": [
+            "Actions booking.nopol.list, create, update, delete",
+            "Normalisasi dan validasi duplikasi nopol aktif"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-008",
+          "title": "Refactor User (Peminjam) CRUD sebagai RPC Actions",
+          "objective": "Port pengelolaan User dan tanda tangan digital ke actions booking.user.*.",
+          "metadata": { "priority": "P2", "area": "Booking / Backend", "dependencies": ["BKG-006"] },
+          "acceptance_criteria": [
+            "Actions booking.user.list, create, updateSignature",
+            "Simpan signature base64 ke Google Drive via SIGNATURE_FOLDER_ID di Script Properties"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-009",
+          "title": "Refactor Atasan WA CRUD sebagai RPC Actions",
+          "objective": "Port pengelolaan kontak Atasan WA ke actions booking.atasan.*.",
+          "metadata": { "priority": "P2", "area": "Booking / Backend", "dependencies": ["BKG-006"] },
+          "acceptance_criteria": [
+            "Actions booking.atasan.list, create, update, delete",
+            "Normalisasi nomor WA otomatis"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-010",
+          "title": "Refactor List Booking & Filter Data sebagai RPC Actions",
+          "objective": "Konsolidasi pembacaan data booking ke action booking.list dengan parameter role dan date range.",
+          "metadata": { "priority": "P1", "area": "Booking / Backend", "dependencies": ["BKG-006"] },
+          "acceptance_criteria": [
+            "Satu action booking.list dengan parameter role, tanggal_awal, tanggal_akhir",
+            "Role filtering untuk SM, GS1, GS2, ADM1, ADM2"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "BKG-PHASE-4",
+      "title": "Fase 4 — Approval Workflow Refactor (State Machine)",
+      "description": "Sentralisasi logika approval ke dalam satu State Machine.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "BKG-011",
+          "title": "Design Approval State Machine",
+          "objective": "Rancang state machine untuk seluruh alur approval peminjaman kendaraan.",
+          "metadata": { "priority": "P1", "area": "Booking / Backend", "dependencies": ["BKG-010"] },
+          "acceptance_criteria": [
+            "Dokumen docs/BOOKING_APPROVAL_FLOW.md menggambarkan siklus status",
+            "Definisi state lengkap: DRAFT, PENDING_AM, PENDING_GS1, PENDING_ADM1, PENDING_GS2, PENDING_ADM2, COMPLETED, REJECTED"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-012",
+          "title": "Implement Unified Approval RPC Action",
+          "objective": "Ganti 5 fungsi approval terpisah dengan satu action booking.approval.process.",
+          "metadata": { "priority": "P1", "area": "Booking / Backend", "dependencies": ["BKG-011", "BKG-005"] },
+          "acceptance_criteria": [
+            "Action booking.approval.process menerima uid, role, action, data",
+            "Validasi transisi state dan hak akses role",
+            "Trigger otomatis pembuatan PDF dan notifikasi WA"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-013",
+          "title": "Refactor PDF Generation — Single Configurable Generator",
+          "objective": "Buat fungsi generateBookingPDF terkonfigurasi menggantikan 5 fungsi duplikat.",
+          "metadata": { "priority": "P2", "area": "Booking / Backend", "dependencies": ["BKG-012"] },
+          "acceptance_criteria": [
+            "Satu fungsi generateBookingPDF(uid, stage)",
+            "Gunakan Script Properties untuk PDF_FOLDER_ID dan PDF_TEMPLATE_SS_ID",
+            "Signer name dan NDK dibaca secara dinamis"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "BKG-PHASE-5",
+      "title": "Fase 5 — WhatsApp Notification Refactor",
+      "description": "Integrasikan antrean WA ke dalam arsitektur terpusat WA_Outbox VAMOS.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "BKG-014",
+          "title": "Port FronteWA Queue ke VAMOS WA_Outbox",
+          "objective": "Port antrean pesan WA ke sheet WA_Outbox terpusat VAMOS.",
+          "metadata": { "priority": "P2", "area": "Booking / Backend / WA", "dependencies": ["BKG-012", "JOB-001"] },
+          "acceptance_criteria": [
+            "Semua notifikasi WA Booking masuk ke sheet WA_Outbox dengan tag BOOKING",
+            "Worker processWAQueue memproses antrean pesan secara terpadu"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-015",
+          "title": "Port WA Message Builder Functions",
+          "objective": "Port pembuat teks pesan WA ke format template VAMOS yang dinamis.",
+          "metadata": { "priority": "P3", "area": "Booking / Backend / WA", "dependencies": ["BKG-014"] },
+          "acceptance_criteria": [
+            "Template pesan WA dinamis dan terkonfigurasi",
+            "URL Web App approval dibaca dari Script Properties",
+            "Tidak ada nama approver hardcoded"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "BKG-PHASE-6",
+      "title": "Fase 6 — Frontend Vue 3 Booking Module",
+      "description": "Implementasi antarmuka pengguna modul Booking di Vue 3 SPA.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "BKG-016",
+          "title": "BookingView.vue — Form Submit Peminjaman",
+          "objective": "Buat komponen Vue untuk form pengajuan peminjaman kendaraan menggantikan form.html.",
+          "metadata": { "priority": "P1", "area": "Booking / Frontend", "dependencies": ["BKG-006", "BKG-007", "BKG-008", "FE-002"] },
+          "acceptance_criteria": [
+            "Form field lengkap dengan dropdown nopol dan user",
+            "Upload foto kondisi fisik kendaraan",
+            "Validasi form dan toast respon notifikasi",
+            "Guard anti double submit"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-017",
+          "title": "BookingListView.vue — Daftar Permintaan & Status",
+          "objective": "Buat komponen daftar peminjaman dengan filter tanggal dan status.",
+          "metadata": { "priority": "P1", "area": "Booking / Frontend", "dependencies": ["BKG-010", "BKG-016"] },
+          "acceptance_criteria": [
+            "Tabel daftar booking dengan status badge berwarna",
+            "Filter berdasarkan rentang tanggal dan status",
+            "Role-based item visibility"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-018",
+          "title": "BookingApprovalView.vue — Halaman Approval per Role",
+          "objective": "Buat komponen approval adaptif berdasarkan peran pengguna (SM, GS1, ADM1, GS2, ADM2).",
+          "metadata": { "priority": "P1", "area": "Booking / Frontend", "dependencies": ["BKG-012", "BKG-017"] },
+          "acceptance_criteria": [
+            "Tampilan adaptif untuk setiap stage approval",
+            "Input checklist kondisi fisik dan upload foto untuk GS1 dan GS2",
+            "Preview PDF setelah approval selesai"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-019",
+          "title": "WAApprovalPage.vue — Landing Page Approve via Link WA",
+          "objective": "Buat halaman konfirmasi approval via token tautan WhatsApp tanpa sesi login penuh.",
+          "metadata": { "priority": "P1", "area": "Booking / Frontend", "dependencies": ["BKG-005", "BKG-012"] },
+          "acceptance_criteria": [
+            "Routing page=approve_wa membaca token dan parameter aksi",
+            "Tampilan ringkasan peminjaman dan tombol konfirmasi",
+            "Penanganan status sudah diproses / token kadaluarsa"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-020",
+          "title": "AdminBookingPanel.vue — CRUD Nopol, User & Atasan WA",
+          "objective": "Konsolidasikan form administrasi master data Booking ke dalam satu panel terpadu.",
+          "metadata": { "priority": "P2", "area": "Booking / Frontend", "dependencies": ["BKG-007", "BKG-008", "BKG-009", "FE-002"] },
+          "acceptance_criteria": [
+            "3 tab administrasi: Kendaraan, Pengguna, dan Atasan WA",
+            "Upload signature via canvas digital",
+            "Pembatasan akses hanya untuk Admin / SM"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    },
+    {
+      "id": "BKG-PHASE-7",
+      "title": "Fase 7 — Audit, Testing & Cutover",
+      "description": "Pengujian otomatis, smoke test komprehensif, dan cutover production.",
+      "status": "Open",
+      "issues": [
+        {
+          "tracker_id": "BKG-021",
+          "title": "Port & Automate Unit Tests",
+          "objective": "Otomatisasi pengujian alur booking dan transisi status approval.",
+          "metadata": { "priority": "P1", "area": "Booking / Testing", "dependencies": ["BKG-012", "BKG-013"] },
+          "acceptance_criteria": [
+            "Unit test untuk semua kode respons submit booking",
+            "Unit test untuk transisi valid & invalid pada state machine",
+            "Unit test untuk token verifikasi approval WA"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-022",
+          "title": "Smoke Test End-to-End Booking Flow",
+          "objective": "Pengujian end-to-end seluruh siklus reservasi kendaraan sebelum cutover.",
+          "metadata": { "priority": "P1", "area": "Booking / Testing", "dependencies": ["BKG-016", "BKG-017", "BKG-018", "BKG-019", "BKG-020", "BKG-021"] },
+          "acceptance_criteria": [
+            "Siklus peminjaman operasional teruji tuntas",
+            "Siklus peminjaman non-operasional teruji tuntas",
+            "Deteksi tumpang tindih jadwal (NOPOL_BUSY) teruji akurat"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        },
+        {
+          "tracker_id": "BKG-023",
+          "title": "Production Cutover & Deprecate old_apps/Booking",
+          "objective": "Alihkan operasional ke VAMOS FMS dan tandai sistem Booking lama sebagai terarsip.",
+          "metadata": { "priority": "P1", "area": "Booking / Deployment", "dependencies": ["BKG-022"] },
+          "acceptance_criteria": [
+            "URL webapp dialihkan ke VAMOS FMS",
+            "old_apps/Booking ditandai DEPRECATED",
+            "Monitoring stabilitas transaksi selama masa transisi"
+          ],
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and POL.ISMS.001.md.",
+          "status": "Open"
+        }
+      ]
+    }
+  ]
+}

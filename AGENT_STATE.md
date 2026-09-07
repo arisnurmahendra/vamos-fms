@@ -63,14 +63,20 @@
 | `.gitignore`         | ✅ Ada       | Lengkap untuk Vue+Vite+GAS                 |
 | `.env` / `.env.demo` | ⚠️ Belum ada | Environment variables belum dibuat         |
 
-### Dokumentasi (Root)
+### Dokumentasi
 
-| File                            | Status |
-| ------------------------------- | ------ |
-| `README.md`                     | ✅ Ada |
-| `AGENT.md`                      | ✅ Ada |
-| `AGENT_STATE.md`                | ✅ Ada |
-| `ISSUE_TRACKER.md`              | ✅ Ada |
+| File                                      | Status | Keterangan                                              |
+| ----------------------------------------- | ------ | ------------------------------------------------------- |
+| `README.md`                               | ✅ Ada | Dokumentasi utama proyek VAMOS                          |
+| `AGENT.md`                                | ✅ Ada | Kontrak & aturan AI Agent                               |
+| `AGENT_STATE.md`                          | ✅ Ada | State terkini proyek                                    |
+| `docs/README.md`                          | ✅ Ada | Indeks pusat dokumentasi teknis                         |
+| `docs/ISSUE_TRACKER.md` & `.json`         | ✅ Ada | Master tracker (Milestone INF, BE, FE, SEC, MOD, OPS)   |
+| `docs/BOOKING_REFACTOR.md`                | ✅ Ada | Roadmap refaktor Booking (Fase 1-6)                     |
+| `docs/MAINTENANCE_REFACTOR.md` & `.json`  | ✅ Ada | Roadmap refaktor SmartServ Maintenance (Fase 1-6)       |
+| `docs/P2H_DEVELOPMENT.md` & `.json`       | ✅ Ada | Roadmap pengembangan P2H Daily Checklist (Fase 1-5)     |
+| `docs/VTACS_DEVELOPMENT.md` & `.json`     | ✅ Ada | Roadmap pengembangan V-TACS BBM Voucher (Fase 1-5)      |
+| `docs/POL.ISMS.001.md`                    | ✅ Ada | Kebijakan Keamanan Informasi & Standard DoD             |
 
 ---
 
@@ -78,12 +84,15 @@
 
 ### Production
 
-| Package       | Versi   | Kegunaan                          |
-| ------------- | ------- | --------------------------------- |
-| `vue`         | ^3.5.42 | Framework UI                      |
-| `crypto-js`   | ^4.2.0  | Enkripsi AES-256 data sensitif    |
-| `localforage` | ^1.10.0 | IndexedDB wrapper (offline cache) |
-| `lodash-es`   | ^4.18.1 | debounce, throttle, utilities     |
+| Package       | Versi   | Kegunaan                                |
+| ------------- | ------- | --------------------------------------- |
+| `vue`         | ^3.5.42 | Framework UI                            |
+| `vue-router`  | ^5.3.1  | Client-side routing                     |
+| `pinia`       | ^4.0.3  | State management                        |
+| `crypto-js`   | ^4.2.0  | Enkripsi AES-256 data sensitif          |
+| `localforage` | ^1.10.0 | IndexedDB wrapper (offline cache)       |
+| `lodash-es`   | ^4.18.1 | debounce, throttle, utilities           |
+| `cross-env`   | ^10.1.0 | Cross-platform env variables            |
 
 ### Dev Dependencies
 
@@ -93,20 +102,12 @@
 | `@vitejs/plugin-vue`     | ^6.0.8 | Vue 3 plugin untuk Vite |
 | `vite-plugin-singlefile` | ^2.3.3 | Bundle semua ke 1 HTML  |
 
-### Belum Terpasang (Dibutuhkan)
-
-| Package      | Kegunaan                     | Kapan Diperlukan     |
-| ------------ | ---------------------------- | -------------------- |
-| `vue-router` | Client-side routing          | Fase 3               |
-| `pinia`      | State management             | Fase 3               |
-| `cross-env`  | Cross-platform env variables | Saat build:demo/prod |
-
 ---
 
 ## 🧠 Catatan Kontekstual
 
-- **Router sudah dikonfigurasi** tapi view components (`BookingView.vue`, dll.) **belum dibuat** — app akan crash jika dijalankan sekarang.
-- **`cross-env`** digunakan di npm scripts (`build:demo`, `build:prod`) tapi **belum di-install**.
-- **`vue-router` dan `pinia`** digunakan di kode tapi **belum ada di `package.json`**.
-- **`scriptId`** di `.clasp.json` masih placeholder — perlu diisi oleh user.
-- Build output ke `deploy/` — folder ini kosong, belum pernah build.
+- **Dependencies lengkap terpasang:** `vue`, `vue-router`, `pinia`, `crypto-js`, `localforage`, `lodash-es`, dan `cross-env` sudah tercatat di `package.json`.
+- **Router sudah dikonfigurasi** tapi view components (`BookingView.vue`, dll.) **belum dibuat** — app perlu dibuatkan skeleton views atau components saat masuk fase implementasi UI.
+- **`scriptId`** di `.clasp.json` masih placeholder — perlu diisi oleh user saat siap deploy ke Google Apps Script aktif.
+- Build output ke `deploy/` — folder ini diabaikan oleh `.gitignore`.
+
