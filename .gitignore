@@ -11,6 +11,9 @@ dist-ssr
 deploy/*.html
 deploy/*.gs
 deploy
+old_apps
+.vscode
+.cla
 
 # ========================
 # Environment Variables
@@ -63,3 +66,4 @@ Desktop.ini
 # Google Apps Script / Clasp
 # ========================
 .clasprc.json
+.clasp.json

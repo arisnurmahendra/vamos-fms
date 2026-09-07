@@ -9,7 +9,7 @@ Sistem ini merupakan penggabungan (merger) dari 4 subsistem operasional:
 1. **Vehicle Booking (Peminjaman KR):** Sistem alokasi dan reservasi kendaraan operasional.
 2. **Maintenance Tracker:** Manajemen siklus hidup kendaraan, riwayat perbaikan, dan jadwal servis berkala.
 3. **Daily P2H (Pemeriksaan & Perawatan Harian):** _Checklist_ digital harian untuk standar keselamatan dan kelayakan jalan armada.
-4. **V-TACS (Voucher Tracking & Consolidation System):** Modul finansial untuk pelacakan pemakaian voucher BBM per kendaraan dan rekonsiliasi tagihan otomatis antara pihak GS dan Vendor POM.
+4. **V-TACS (Voucher Tracking & Consolidation System):** Modul pencatatan pemakaian voucher BBM per kendaraan dengan dukungan _offline-first_ (IndexedDB), serta dasbor konsolidasi tagihan _real-time_ untuk GA dan Vendor POM.
 
 ### 🛠️ Sorotan Arsitektur (Architecture Highlights)
 

@@ -1,0 +1,28 @@
+{
+  "name": "vamos-fms",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:demo": "cross-env VITE_APP_MODE=demo vite build",
+    "build:prod": "cross-env VITE_APP_MODE=production vite build",
+    "push": "clasp push",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "crypto-js": "^4.2.0",
+    "localforage": "^1.10.0",
+    "lodash-es": "^4.18.1",
+    "pinia": "^4.0.3",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.2.2",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}

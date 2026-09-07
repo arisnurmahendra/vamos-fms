@@ -1,0 +1,21 @@
+# ========================
+# Clasp Ignore
+# ========================
+# Clasp hanya perlu push file .gs dan .html ke Apps Script.
+# Semua file lain di-ignore agar deployment tetap bersih.
+
+# Ignore everything by default
+**/**
+
+# Allow only GAS files
+!*.gs
+!*.html
+!appsscript.json
+
+# Always ignore these
+node_modules/**
+.git/**
+.vscode/**
+*.md
+*.json
+!appsscript.json
