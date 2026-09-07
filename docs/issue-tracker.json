@@ -131,14 +131,26 @@
             "priority": "P2",
             "area": "Infrastructure",
             "dependencies": ["INF-002"],
-            "status": "Open",
-            "assignee": null
+            "status": "Closed",
+            "assignee": "User"
           },
           "acceptance_criteria": [
             "File .env.example mencakup VITE_APP_MODE dengan contoh nilai demo dan production.",
             "Dokumentasi penggunaan environment variable dijelaskan dalam file."
           ],
-          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md."
+          "definition_of_done": "Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.",
+          "notes": {
+            "commit": "fa577c2",
+            "branch": "main",
+            "implementation_notes": [
+              "Template .env.example memuat VITE_APP_MODE (demo/production), VITE_CRYPTO_KEY, dan VITE_VIEW_LOG.",
+              "Aturan .gitignore telah melindungi seluruh file .env dan .env.* kecuali !.env.example."
+            ],
+            "verification": [
+              "Test-Path .env.example => True",
+              "cat .env.example => Memuat VITE_APP_MODE"
+            ]
+          }
         },
         {
           "tracker_id": "INF-006",

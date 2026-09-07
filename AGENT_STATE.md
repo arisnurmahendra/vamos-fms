@@ -61,7 +61,7 @@
 | `package.json`       | ✅ Ada       | Scripts + dependencies lengkap             |
 | `.clasp.json`        | ✅ Ada       | rootDir: ./gas (scriptId placeholder)      |
 | `.gitignore`         | ✅ Ada       | Lengkap untuk Vue+Vite+GAS                 |
-| `.env` / `.env.demo` | ⚠️ Belum ada | Environment variables belum dibuat         |
+| `.env.example`       | ✅ Ada       | Template environment variables (demo/production) |
 
 ### Dokumentasi
 

@@ -12,8 +12,8 @@
 | Metrik | Jumlah |
 | :--- | :--- |
 | **Total Issues** | 28 |
-| **Closed (Selesai)** | 7 |
-| **Open (Dalam Pengerjaan/Backlog)** | 21 |
+| **Closed (Selesai)** | 8 |
+| **Open (Dalam Pengerjaan/Backlog)** | 20 |
 | **P0 Critical Open** | 1 |
 
 ---
@@ -165,14 +165,26 @@ Membuat file template `.env.example` yang mendefinisikan variabel lingkungan sep
 - **Priority:** P2  
 - **Area:** Infrastructure  
 - **Dependencies:** INF-002  
-- **Status:** Open  
+- **Status:** Closed  
 
 **Acceptance Criteria**  
-- File `.env.example` mencakup `VITE_APP_MODE` dengan contoh nilai `demo` dan `production`.  
-- Dokumentasi penggunaan environment variable dijelaskan dalam file.  
+- [x] File `.env.example` mencakup `VITE_APP_MODE` dengan contoh nilai `demo` dan `production`.  
+- [x] Dokumentasi penggunaan environment variable dijelaskan dalam file.  
 
 **Definition of Done**  
 Follow docs/ISSUE_TRACKER.md section 8 and all mandatory controls in docs/POL.ISMS.001.md.
+
+**Notes**  
+Implemented in `.env.example` on `main` (GitHub Issue #5 closed).
+
+Implementation notes:
+- Template `.env.example` memuat `VITE_APP_MODE` (demo/production), `VITE_CRYPTO_KEY`, dan `VITE_VIEW_LOG`.
+- Aturan `.gitignore` telah melindungi seluruh file `.env` dan `.env.*` kecuali `!.env.example`.
+
+Verification:
+- `Test-Path .env.example` => True
+- `cat .env.example` => Memuat VITE_APP_MODE=demo
+
 
 ---
 
